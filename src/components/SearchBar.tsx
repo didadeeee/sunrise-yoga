@@ -26,6 +26,7 @@ export default function SearchBar() {
     setInstructor(event.target.value);
     console.log(event.target.value);
   };
+  
   return (
     <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 3 }}>
       <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>

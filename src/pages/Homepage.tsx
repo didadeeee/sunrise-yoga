@@ -3,11 +3,18 @@ import Footer from "../components/Footer";
 import YogaCard from "../components/YogaCard";
 import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
-// import { useState, useEffect } from "react";
 
-export default function Homepage() {
-  // const [users, setUsers] = useState([]);
+interface HomepageProps {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
 
+interface User {
+  name: string;
+  email: string;
+}
+
+export default function Homepage({ user, setUser }: HomepageProps) {
   // useEffect(() => {
   //   fetch("https://dummyjson.com/users")
   //     .then((res) => res.json())
@@ -16,10 +23,9 @@ export default function Homepage() {
 
   // console.log(users);
 
-
   return (
     <>
-      <Header />
+      <Header user={user} setUser={setUser} />
       <Banner />
       <SearchBar />
       <YogaCard />

@@ -5,7 +5,7 @@ require("dotenv").config();
 const database = require("./config/database");
 // database.connect();
 
-// const userRouter = require("./routes/usersRouter");
+const userRouter = require("./routes/usersRouter");
 // const artworkRouter = require("./routes/artworksRouter");
 // const exhibitionRouter = require("./routes/exhibitionsRouter");
 // const locationRouter = require("./routes/locationsRouter");
@@ -41,12 +41,7 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-// app.get("/api/secret", isLoggedIn, (req, res) => {
-//   const { user } = res.locals;
-//   res.json({ user });
-// });
-
-// app.use("/api/users", userRouter);
+app.use("/api/users", userRouter);
 // app.use("/api/exhibitions", exhibitionRouter);
 // app.use("/api/artworks", artworkRouter);
 // app.use("/api/locations", locationRouter);

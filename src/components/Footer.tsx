@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
+import { useState, useEffect } from "react";
 
 function Copyright() {
   return (
@@ -16,6 +17,18 @@ function Copyright() {
 }
 
 export default function Footer() {
+  const [quote, setQuote] = useState("");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  function fetchData() {
+    fetch("https://api.goprogram.ai/inspiration")
+      .then((response) => response.json())
+      .then((data) => setQuote(data.quote));
+  }
+
   return (
     <Box sx={{ bgcolor: "background.paper", p: 4 }} component="footer">
       <Typography variant="h6" align="center" gutterBottom>
@@ -28,7 +41,7 @@ export default function Footer() {
         component="p"
         sx={{ mb: 2 }}
       >
-        "Yoga is a mirror to look at ourselves from within"
+        {quote}
       </Typography>
       <Copyright />
     </Box>

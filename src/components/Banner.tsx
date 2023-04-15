@@ -45,7 +45,7 @@ export default function Homepage() {
             justifyContent="center"
           >
             <Button variant="outlined">Yoga</Button>
-            <Button variant="outlined">Medidate</Button>
+            <Button variant="outlined">Make an Appointment</Button>
           </Stack>
         </Container>
       </Box>
