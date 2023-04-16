@@ -11,18 +11,26 @@ const yogaSchema = new Schema(
       minlength: 10,
       maxlength: 50,
     },
-
-    intensity: {
-      type: String,
-      enum: [Beginner, Intermediate, Advanced],
-      required: true,
-    },
-
     instructor: {
       type: String,
       required: true,
       trim: true,
       uppercase: true,
+    },
+    handle: {
+      type: String,
+      trim: true,
+      uppercase: true,
+    },
+    intensity: {
+      type: String,
+      enum: [Beginner, Intermediate, Advanced],
+      required: true,
+    },
+    duration: {
+      type: Number,
+      required: true,
+      minLength: 5,
     },
 
     thumbnailImageURL: {

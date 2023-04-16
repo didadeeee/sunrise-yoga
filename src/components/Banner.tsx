@@ -17,7 +17,7 @@ export default function Homepage() {
             "url('https://cdn.yogajournal.com/wp-content/uploads/2021/01/yoga-poses-graphic_getty-images.jpg?crop=535:301&width=1070&enable=upscale')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: "0.4",
+          opacity: "0.8",
         }}
       >
         <Container maxWidth="sm">
@@ -30,14 +30,14 @@ export default function Homepage() {
           >
             ♡ Welcome to Sunrise Yoga ♡
           </Typography>
-          <Typography
+          {/* <Typography
             variant="h5"
             align="center"
             color="text.secondary"
             paragraph
           >
             What do you feel like today?
-          </Typography>
+          </Typography> */}
           <Stack
             sx={{ pt: 4 }}
             direction="row"

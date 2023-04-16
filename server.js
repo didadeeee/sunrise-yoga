@@ -5,7 +5,7 @@ require("dotenv").config();
 const database = require("./config/database");
 // database.connect();
 
-const userRouter = require("./routes/usersRouter");
+const userRouter = require("./routes/userRouter");
 // const artworkRouter = require("./routes/artworksRouter");
 // const exhibitionRouter = require("./routes/exhibitionsRouter");
 // const locationRouter = require("./routes/locationsRouter");

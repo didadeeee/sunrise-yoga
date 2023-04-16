@@ -1,34 +1,12 @@
 [
   {
     title: "",
-    intensity: "",
     instructor: "",
+    handle: "",
+    intensity: "",
+    duration: "",
     thumbnailImageURL: "",
     videoEmbeddedURL: "",
     description: "",
-  },
-  {
-    title: "",
-    intensity: "",
-    instructor: "",
-    thumbnailImageURL: "",
-    videoEmbeddedURL: "",
-    description: "",
-  },
-  {
-    title: "",
-    intensity: "",
-    instructor: "",
-    thumbnailImageURL: "",
-    videoEmbeddedURL: "",
-    description: "",
-  },
-  {
-    title: "",
-    intensity: "",
-    instructor: "",
-    thumbnailImageURL: "",
-    videoEmbeddedURL: "",
-    description: "",
-  },
+  }
 ];

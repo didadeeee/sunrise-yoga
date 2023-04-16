@@ -18,6 +18,19 @@ export default function SignUp({ setUser }) {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const handleBirthday = async () => {
+    const response = await fetch("/api/users/setbirthday", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ state }),
+    });
+    const data = await response.json();
+    console.log("data", data);
+    return;
+    };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (state.password.length < 5) {
@@ -36,6 +49,7 @@ export default function SignUp({ setUser }) {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+    handleBirthday();
     console.log("submitted");
     navigate("/users/login");
   };
