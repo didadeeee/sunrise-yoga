@@ -9,17 +9,22 @@ import Container from "@mui/material/Container";
 import { useState, useEffect } from "react";
 import Airtable from "airtable";
 
+type Fieldset = {
+    title: string;
+    instructor: string;
+    handle: string;
+    duration: number;
+    intensity: string;
+    description: string;
+    thumbnailImageURL: string;
+    videoEmbeddedURL: string;
+}
+
+
 type recordsProps = {
-  id: string,
-  fields: {
-  title: string,
-  instructor: string,
-  duration: number,
-  intensity: string,
-  description: string,
-  thumbnailImageURL: string,
-  }
-}[]
+  id: string;
+  fields: Fieldset;
+}[];
 // const apiKey = process.env.AIRTABLE_API_KEY;
 
 const base = new Airtable({
@@ -35,11 +40,20 @@ export default function YogaCard() {
   useEffect(() => {
     const getRecords = async () => {
       const fetchedRecords = await table.select().firstPage();
-      setRecords(fetchedRecords);
+      const recordsArray = fetchedRecords.map((record) => ({
+        id: record.id,
+        fields: record.fields,
+      }));
+      setRecords(recordsArray);
     };
 
     getRecords();
   }, []);
+
+  // Check if records is null before rendering
+  if (records === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container sx={{ py: 6 }} maxWidth="xl">

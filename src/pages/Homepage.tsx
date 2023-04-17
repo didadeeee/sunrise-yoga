@@ -5,13 +5,15 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 
 interface HomepageProps {
-  user: any;
+  user: User;
   setUser: React.Dispatch<React.SetStateAction<any>>;
 }
 
 interface User {
   name: string;
   email: string;
+  password: string;
+  birthday: Date;
 }
 
 export default function Homepage({ user, setUser }: HomepageProps) {

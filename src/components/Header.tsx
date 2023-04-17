@@ -8,9 +8,22 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 import { logout } from "../utilities/users-service";
 
+interface HeaderProps {
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
+}
 
-export default function Header({ user, setUser }) {
-  const handleLogout = async (user) => {
+interface User {
+  name: string;
+  email: string;
+  password: string;
+  birthday: Date;
+}
+
+
+export default function Header({ user, setUser }: HeaderProps) {
+  
+  const handleLogout = async () => {
     logout();
     setUser(null);
     console.log("user has been logged out successfully.");

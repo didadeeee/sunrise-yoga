@@ -8,14 +8,18 @@ import Typography from '@mui/material/Typography';
 import { getToken , getUser} from "../utilities/users-service";
 import "./Login.css";
 
-export default function Login({setUser}) {
+interface SignUpProps {
+  setUser: (user: any) => void;
+} 
 
-  const [error, setError] = useState("");
+export default function Login({ setUser }: SignUpProps) {
+
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
-  const handleLogin = async (event) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target as HTMLFormElement);
     const body = Object.fromEntries(formData);
 
     try {
@@ -69,7 +73,7 @@ export default function Login({setUser}) {
           </Box>
 
       <Box className="R2">
-      <Typography variant="p">No account yet? </Typography>
+      <Typography variant="subtitle1">No account yet? </Typography>
         <Link to={`/users/signup`}>
          <Button>Sign Up</Button>
         </Link>

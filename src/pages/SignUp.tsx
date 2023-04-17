@@ -12,7 +12,6 @@ interface State {
   [key: string]: any;
 }
 
-
 interface SignUpProps {
   setUser: (user: any) => void;
 } 
