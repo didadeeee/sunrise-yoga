@@ -1,3 +1,4 @@
+import.meta.env.VITE_AIRTABLE_API_KEY;
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -20,16 +21,16 @@ type Fieldset = {
     videoEmbeddedURL: string;
 }
 
-
 type recordsProps = {
   id: string;
   fields: Fieldset;
 }[];
-// const apiKey = process.env.AIRTABLE_API_KEY;
+
+const apiKey = import.meta.env.VITE_AIRTABLE_API_KEY;
 
 const base = new Airtable({
   apiKey:
-    "pat8WECo2U8JXrcxR.b203059d28f27c0fd174d467c07ed26e4d3630f73d3b06b36adc547168cef688",
+    apiKey,
 }).base("appTRgzORZHZWBcKn");
 
 const table = base("Projects");
