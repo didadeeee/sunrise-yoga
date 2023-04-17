@@ -8,14 +8,23 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import "./SignUp.css";
 
-export default function SignUp({ setUser }) {
-  const [state, setState] = useState({
+interface State {
+  [key: string]: any;
+}
+
+
+interface SignUpProps {
+  setUser: (user: any) => void;
+} 
+
+export default function SignUp({ setUser }: SignUpProps) {
+  const [state, setState] = useState<State>({
     name: "",
     email: "",
     password: "",
     birthday: "",
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
   const handleBirthday = async () => {
@@ -31,7 +40,7 @@ export default function SignUp({ setUser }) {
     return;
     };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (state.password.length < 5) {
       setError("Password must be at least 5 characters or numbers long.");
@@ -54,7 +63,7 @@ export default function SignUp({ setUser }) {
     navigate("/users/login");
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
       [event.target.name]: event.target.value,
@@ -64,7 +73,6 @@ export default function SignUp({ setUser }) {
   return (
     <Box className="SignUpFormContainer">
       <form
-        component="form"
         autoComplete="off"
         onSubmit={handleSubmit}
         className="SignUpForm"
@@ -145,7 +153,7 @@ export default function SignUp({ setUser }) {
         </Box>
 
         <Box className="R1">
-          <Typography variant="p">
+          <Typography variant="subtitle1">
             Already have an account?
             <Link to={`/users/login`}>
               <Button>Login</Button>

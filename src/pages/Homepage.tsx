@@ -5,8 +5,8 @@ import Header from "../components/Header";
 import SearchBar from "../components/SearchBar";
 
 interface HomepageProps {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: any;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
 }
 
 interface User {
