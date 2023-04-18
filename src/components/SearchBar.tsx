@@ -5,28 +5,26 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useState, useEffect } from "react";
+import type { Yoga } from "../pages/Homepage";
 
-const instructors: Array<string> = [
-  "Paddy O'Furniture",
-  "Olive Yew",
-  "Aida Bugg",
-  "Maureen Biologist",
-];
+type YogaCardProps = {
+  yogas: Yoga[];
+};
 
-export default function SearchBar() {
+export default function SearchBar({ yogas }: YogaCardProps) {
   const [intensity, setIntensity] = useState("");
   const [instructor, setInstructor] = useState("");
 
   const handleIntensity = (event: SelectChangeEvent) => {
     setIntensity(event.target.value);
-    console.log(event.target.value);
   };
 
   const handleInstructor = (event: SelectChangeEvent) => {
     setInstructor(event.target.value);
-    console.log(event.target.value);
   };
-  
+
+  const instructors = [...new Set(yogas.map((yoga) => yoga.instructor))];
+
   return (
     <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 3 }}>
       <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>

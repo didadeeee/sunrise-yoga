@@ -2,11 +2,13 @@ const express = require("express");
 const path = require("path");
 const logger = require("morgan");
 require("dotenv").config();
+require("./config/sqldatabase");
 const database = require("./config/database");
+
 // database.connect();
 
 const userRouter = require("./routes/userRouter");
-// const artworkRouter = require("./routes/artworksRouter");
+const yogaRouter = require("./routes/yogasRouter");
 // const exhibitionRouter = require("./routes/exhibitionsRouter");
 // const locationRouter = require("./routes/locationsRouter");
 // const commentRouter = require("./routes/commentsRouter");
@@ -20,10 +22,6 @@ const port = process.env.PORT || 3001;
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "dist")));
-
-app.get("/api", (req, res) => {
-  res.json({ msg: "Hi" });
-});
 
 const isLoggedIn = (req, res, next) => {
   try {
@@ -42,7 +40,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 app.use("/api/users", userRouter);
-// app.use("/api/exhibitions", exhibitionRouter);
+app.use("/api", yogaRouter);
 // app.use("/api/artworks", artworkRouter);
 // app.use("/api/locations", locationRouter);
 // app.use("/api", commentRouter);
