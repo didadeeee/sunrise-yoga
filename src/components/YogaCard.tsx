@@ -2,12 +2,13 @@ import.meta.env.VITE_AIRTABLE_API_KEY;
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkIcon from "@mui/icons-material/Bookmark";    
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import type { Yoga } from "../pages/Homepage";
+import type { Yoga } from "../../src/Type";
+import { Link } from "react-router-dom";
 
 type YogaCardProps = {
   yogas: Yoga[];
@@ -49,6 +50,7 @@ export default function YogaCard({ yogas }: YogaCardProps) {
                   <Typography variant="subtitle1">
                     {yoga.description}
                   </Typography>
+                  <Link to={`/yogas/${yoga.id}`}>Learn More</Link>
                 </CardContent>
               </Card>
             </Grid>

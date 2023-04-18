@@ -2,9 +2,9 @@ var express = require("express");
 var router = express.Router();
 const yogasController = require("../controllers/yogasController");
 
-// start from /
+// start from /api
 router.get("/", yogasController.showYogas);
-// router.get("/:dogName", dogCtrl.showSelectedDogs);
+router.get("/yogas/:id", yogasController.showSelectedYogas);
 // router.post("/search")
 
 module.exports = router;
