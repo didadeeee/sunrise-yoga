@@ -1,30 +1,64 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { getUser, signUp } from "../utilities/users-service";
+import { getUser, signUp } from "../../utilities/users-service";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { State, SignUpProps } from "../../Type";
 import "./SignUp.css";
 
-interface State {
-  [key: string]: any;
-}
-
-interface SignUpProps {
-  setUser: (user: any) => void;
-} 
-
 export default function SignUp({ setUser }: SignUpProps) {
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState<State>({
     name: "",
     email: "",
     password: "",
     birthday: "",
   });
-  const [error, setError] = useState<string>("");
+
   const navigate = useNavigate();
+
+  const validateSchema = Yup.object().shape({
+    name: Yup.string().required("This field is required"),
+    email: Yup.string()
+      .email("Please enter a valid email")
+      .required("This field is required"),
+    birthday: Yup.date().required("This field is required"),
+    password: Yup.string()
+      .required("This field is required")
+      .min(5, "Pasword must be 5 or more characters")
+      .matches(/\d/, "Password should contain at least one number")
+      .matches(
+        /(?=.*[a-z])(?=.*[A-Z])\w+/,
+        "Password ahould contain at least one uppercase and lowercase character"
+      )
+      .matches(
+        /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/,
+        "Password should contain at least one special character"
+      ),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      birthday: "",
+      password: "",
+    },
+    validationSchema: validateSchema,
+    onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        resetForm();
+      }, 1000 * 2);
+    },
+  });
 
   const handleBirthday = async () => {
     const response = await fetch("/api/users/setbirthday", {
@@ -32,19 +66,22 @@ export default function SignUp({ setUser }: SignUpProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ state }),
+      body: JSON.stringify({
+        state: {
+          ...state,
+          name: formik.values.name,
+          email: formik.values.email,
+          birthday: formik.values.birthday,
+        },
+      }),
     });
     const data = await response.json();
     console.log("data", data);
     return;
-    };
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (state.password.length < 5) {
-      setError("Password must be at least 5 characters or numbers long.");
-      return;
-    }
     window.alert(
       state.email + " Account has been created successfully. Please Login."
     );
@@ -53,7 +90,7 @@ export default function SignUp({ setUser }: SignUpProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(state),
+      body: JSON.stringify(formik.values),
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
@@ -71,26 +108,22 @@ export default function SignUp({ setUser }: SignUpProps) {
 
   return (
     <Box className="SignUpFormContainer">
-      <form
-        autoComplete="off"
-        onSubmit={handleSubmit}
-        className="SignUpForm"
-      >
+      <form autoComplete="off" onSubmit={handleSubmit} className="SignUpForm">
         <Typography variant="h5">Sign Up a new Account </Typography>
-        {error}
-
         <Box className="R1">
           <TextField
             id="outlined-basic"
-            label="Name"
             variant="outlined"
             type="text"
+            label="Name"
             name="name"
-            value={state.name}
+            value={formik.values.name}
+            helperText={formik.errors.name ? formik.errors.name : ""}
             InputLabelProps={{
               style: { color: "#000000" },
             }}
-            onChange={handleChange}
+            onChange={formik.handleChange}
+            className="my-textfield"
             required
           />
         </Box>
@@ -102,11 +135,13 @@ export default function SignUp({ setUser }: SignUpProps) {
             variant="outlined"
             type="email"
             name="email"
-            value={state.email}
+            value={formik.values.email}
+            helperText={formik.errors.email ? formik.errors.email : ""}
             InputLabelProps={{
               style: { color: "#000000" },
             }}
-            onChange={handleChange}
+            onChange={formik.handleChange}
+            className="my-textfield"
             required
           />
         </Box>
@@ -114,15 +149,17 @@ export default function SignUp({ setUser }: SignUpProps) {
         <Box className="R1">
           <TextField
             id="outlined-basic"
-            label="Password (min. 5)"
+            label="Password"
             variant="outlined"
             type="password"
             name="password"
-            value={state.password}
+            value={formik.values.password}
+            helperText={formik.errors.password ? formik.errors.password : ""}
             InputLabelProps={{
               style: { color: "#000000" },
             }}
-            onChange={handleChange}
+            onChange={formik.handleChange}
+            className="my-textfield"
             required
           />
         </Box>
@@ -134,12 +171,14 @@ export default function SignUp({ setUser }: SignUpProps) {
             variant="outlined"
             type="date"
             name="birthday"
-            value={state.birthday}
+            value={formik.values.birthday}
+            helperText={formik.errors.birthday ? formik.errors.birthday : ""}
             InputLabelProps={{
               style: { color: "#000000" },
               shrink: true,
             }}
-            onChange={handleChange}
+            onChange={formik.handleChange}
+            className="my-textfield"
             required
           />
         </Box>

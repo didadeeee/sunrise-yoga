@@ -1,21 +1,55 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { getToken, getUser } from "../utilities/users-service";
+import { getToken, getUser } from "../../utilities/users-service";
+import { SignUpProps } from "../../Type";
 import "./Login.css";
 
-interface SignUpProps {
-  setUser: (user: any) => void;
-}
-
 export default function Login({ setUser }: SignUpProps) {
-  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const validateSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Please enter a valid email")
+      .required("This field is required"),
+    password: Yup.string()
+      .required("This field is required")
+      .min(5, "Pasword must be 5 or more characters")
+      .matches(/\d/, "Password should contain at least one number")
+      .matches(
+        /(?=.*[a-z])(?=.*[A-Z])\w+/,
+        "Password ahould contain at least one uppercase and lowercase character"
+      )
+      .matches(
+        /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/,
+        "Password should contain at least one special character"
+      ),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validateSchema,
+    onSubmit: (values, { resetForm }) => {
+      console.log(values);
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        resetForm();
+      }, 1000 * 2);
+    },
+  });
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
@@ -34,14 +68,10 @@ export default function Login({ setUser }: SignUpProps) {
       if (data.token) {
         localStorage.setItem("token", data.token);
         setUser(getUser());
-        setError("");
         window.alert("Account has login successfully.");
         navigate("/");
-      } else {
-        setError(data.message);
       }
     } catch (error) {
-      // setError(error.message);
       console.log(error);
     }
   };
@@ -51,12 +81,18 @@ export default function Login({ setUser }: SignUpProps) {
       <form onSubmit={handleLogin} className="LoginForm">
         <br></br>
         <Typography variant="h5">User Login </Typography>
-        {error}
         <Box className="R2">
           <TextField
             type="email"
             label="Enter your email address"
             name="email"
+            value={formik.values.email}
+            helperText={formik.errors.email ? formik.errors.email : ""}
+            onChange={formik.handleChange}
+            className="my-textfield"
+            InputLabelProps={{
+              style: { color: "#000000" },
+            }}
             required
           />
         </Box>
@@ -65,7 +101,14 @@ export default function Login({ setUser }: SignUpProps) {
           <TextField
             label="Enter your password"
             name="password"
+            value={formik.values.password}
+            helperText={formik.errors.password ? formik.errors.password : ""}
+            onChange={formik.handleChange}
+            className="my-textfield"
             type="password"
+            InputLabelProps={{
+              style: { color: "#000000" },
+            }}
             required
           />
         </Box>

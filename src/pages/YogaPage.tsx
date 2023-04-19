@@ -26,6 +26,11 @@ export default function YogaPage() {
     <>
       {yoga && (
         <>
+          <Button variant="outlined">
+            <Link to="" style={{ textDecoration: "none" }}>
+              Bookmark
+            </Link>
+          </Button>
           <Typography variant="h4" component="h2">
             {yoga.title}
           </Typography>
@@ -44,13 +49,7 @@ export default function YogaPage() {
                 <Typography variant="subtitle1" color="text.primary">
                   Duration:{yoga.duration}
                 </Typography>
-                <Box className="YogaPageButton">
-                  <Button variant="outlined">
-                    <Link to="" style={{ textDecoration: "none" }}>
-                      Bookmark
-                    </Link>
-                  </Button>
-                </Box>
+                <Box className="YogaPageButton"></Box>
               </Grid>
             </Grid>
           </Box>

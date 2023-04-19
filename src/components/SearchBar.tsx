@@ -1,7 +1,4 @@
-import * as z from "zod";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-// import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -14,44 +11,55 @@ type YogaCardProps = {
   yogas: Yoga[];
 };
 
-export default function SearchBar({ yogas }: YogaCardProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [duration, setDuration] = useState(searchParams.get("duration"));
-  const [intensity, setIntensity] = useState(searchParams.get("intensity"));
-  const [instructor, setInstructor] = useState(searchParams.get("instructor"));
-  const page = searchParams.get("page") || 0;
+const pages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  // const res = useFetch(query ? `/search/${query}` : "/");
+export default function SearchBar({ yogas }: YogaCardProps) {
+  const [duration, setDuration] = useState([]);
+  const [intensity, setIntensity] = useState([]);
+  const [instructor, setInstructor] = useState([]);
+  const [page, setPage] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const instructors = [...new Set(yogas.map((yoga) => yoga.instructor))];
   const levels = [...new Set(yogas.map((yoga) => yoga.intensity))];
   const durations = [...new Set(yogas.map((yoga) => yoga.duration))].sort();
 
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   const { signal } = controller;
+
+  //   fetch(
+  //     `https://dummyjson.com/products/search?q=${searchParams.get("name")}`,
+  //     { signal }
+  //   )
+  //     .then((res) => res.json())
+  //     .then((data) => setDuration(data.duration));
+
+  //   //* useEffect return -> cleanup function
+  //   return () => {
+  //     console.log("unmount");
+  //     controller.abort();
+  //   };
+  // }, [searchParams]);
+
   const handleDuration = (event: any) => {
-    const newDuration = event.target.value;
-    setSearchParams({
-      ...searchParams,
-      duration: newDuration,
-    });
-    console.log(event.target.value);
+    const duration = event.target.value;
+    setSearchParams({ ...Object.fromEntries(searchParams), duration });
   };
 
   const handleIntensity = (event: any) => {
-    const newIntensity = event.target.value;
-    setSearchParams({
-      ...searchParams,
-      intensity: newIntensity,
-    });
-    console.log(event.target.value);
+    const intensity = event.target.value;
+    setSearchParams({ ...Object.fromEntries(searchParams), intensity });
   };
 
   const handleInstructor = (event: any) => {
-    const newInstructor = event.target.value;
-    setSearchParams({
-      ...searchParams,
-      instructor: newInstructor,
-    });
-    console.log(event.target.value);
+    const instructor = event.target.value;
+    setSearchParams({ ...Object.fromEntries(searchParams), instructor });
+  };
+
+  const handlePage = (event: any) => {
+    const page = event.target.value;
+    setSearchParams({ ...Object.fromEntries(searchParams), page });
   };
 
   return (
@@ -133,7 +141,29 @@ export default function SearchBar({ yogas }: YogaCardProps) {
             ))}
           </Select>
         </FormControl>
-        <Button>Filter</Button>
+
+        <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
+          <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+            Page
+          </InputLabel>
+          <Select
+            sx={{ minWidth: "100px" }}
+            labelId="demo-simple-select-autowidth-label"
+            id="demo-simple-select-autowidth"
+            value={searchParams.get("page")}
+            onChange={handlePage}
+            autoWidth
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {pages.map((page) => (
+              <MenuItem key={page} value={page}>
+                {page}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </FormControl>
     </Box>
   );

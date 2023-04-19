@@ -16,3 +16,11 @@ export type User = {
     thumbnailimageurl: string;
     videoembeddedurl: string;
   };
+
+  export type SignUpProps = {
+    setUser: (user:any) => void;
+  }
+
+  export type State = {
+  [key: string]: any;
+}

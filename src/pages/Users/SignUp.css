@@ -30,5 +30,11 @@
     align-items: center;
 }
 
+.my-textfield .MuiFormHelperText-root {
+    color: #dc3545;
+    font-size: 12px;
+    min-height: 15px;
+    text-align: left;
+  }
 
 /* start row, start Col, End Row, End col */
