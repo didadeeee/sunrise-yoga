@@ -51,6 +51,17 @@ VALUES ('Full Body Deep Stretches Yoga Flo', 'Advanced', '30', 'https://i.ytimg.
 INSERT INTO Yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
 VALUES ('Full Body Stretch & Strengthen', 'Intermediate', '30', 'https://i.ytimg.com/vi/mPYA6_rKdtU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDrgK48lFcD-gzCtiX9s67q6u71Ow', 'https://www.youtube.com/embed/mPYA6_rKdtU', 'The class will begin by bringing ourselves into the present moment by setting an intention, then we will move into seated stretches and a main sequence including full body stretches, twists and a little core work!');
 
+INSERT INTO Yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
+VALUES ('Full Body Yoga for Strength & Flexibility', 'Advanced', '25', 'https://i.ytimg.com/vi/Eml2xnoLpYE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBTnUFk0gXqMGAgvecmjVLFeFzjRA', 'https://www.youtube.com/watch?v=Eml2xnoLpYE&ab_channel=growingannanas', 'Powerful Yoga Workout for Strength & Flexibility. Join us for a 25 Minute Flow. Open the hips, the shoulders, and tap into your core strength.');
+
+INSERT INTO Yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
+VALUES ('Full Body Gentle Yoga Practice for Beginners and Athletes', 'Beginner', '22', 'https://i.ytimg.com/vi/B4kNiCWTl7M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB-jWaxSXvvaGPXuOx4j8-AKfSBUQ', 'https://www.youtube.com/watch?v=B4kNiCWTl7M&ab_channel=BreatheandFlow', 'This is a 22 minute full body gentle yoga practice for beginners. Ideal for athletes and easy days to recover, stretch and strengthen.');
+
+INSERT INTO Yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
+VALUES ('Yoga For Your Core', 'Beginner', '27', 'https://i.ytimg.com/vi/_Mx24iENIEY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCAEm5jPV576nq0VsUCJMlEwg1QyA', 'https://www.youtube.com/watch?v=_Mx24iENIEY&t=1414s&ab_channel=YogaWithAdriene', 'Who says you cannot have it all? It is all about balance. This session takes you on a journey from deep core activation, through strength and conditioning, on to exquisite rest. All designed to foster a balanced and happy equilibrium for the day.');
+
+All levels are welcome! No matter what your environment is like in this season, take some time to balance the brain and body today. .');
+
 INSERT INTO Instructor (Yoga_id, name, handle)
 VALUES ('1', 'Adrienne', 'Yoga with Adrienne');
 
@@ -68,3 +79,14 @@ VALUES ('5', 'Flo', 'Breathe and Flow');
 
 INSERT INTO Instructor (Yoga_id, name, handle)
 VALUES ('6', 'Jessica', 'Jessica Richburg');
+
+INSERT INTO Instructor (Yoga_id, name, handle)
+VALUES ('7', 'Anna', 'growingannanas');
+
+UPDATE instructor
+SET yoga_id = yoga_id || '{8}'
+WHERE name = 'Flo';
+
+UPDATE instructor
+SET yoga_id = yoga_id || '{9}'
+WHERE name = 'Adrienne';

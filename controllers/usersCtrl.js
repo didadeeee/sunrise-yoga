@@ -1,7 +1,6 @@
 const pool = require("../config/sqldatabase");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const Yup = require("yup");
 const nodemailer = require("nodemailer");
 const mailgen = require("mailgen");
 const cron = require("node-cron");
@@ -65,12 +64,18 @@ cron.schedule("5 4 * * *", async () => {
 });
 
 const create = async (req, res) => {
+  console.log("Creating new user...");
   const { name, email, birthday, password } = req.body;
+  console.log("Name:", name);
+  console.log("Email:", email);
+  console.log("Birthday:", birthday);
+  console.log("Password:", password);
   try {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const { rows } = await pool.query(
-      "INSERT INTO User( name, email, birthday, password) VALUES($1, $2, $3 , $4) RETURNING *",
-      [name, email, hashedPassword, birthday]
+      "INSERT INTO users(name, email, birthday, password, yoga_id) VALUES($1, $2, $3, $4, $5) RETURNING *"[
+        (name, email, hashedPassword, birthday, [1, 2, 3])
+      ]
     );
     const newUser = rows[0];
     res.status(201).json(newUser);
@@ -135,8 +140,7 @@ const login = async (req, res) => {
 // };
 
 module.exports = {
-  //   isAuth,
   create,
-    login,
+  login,
   setBirthday,
 };

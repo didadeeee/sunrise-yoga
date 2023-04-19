@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import FilteredYogas from "./FilteredYogas";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import type { Yoga } from "../../src/Type";
@@ -24,23 +25,33 @@ export default function SearchBar({ yogas }: YogaCardProps) {
   const levels = [...new Set(yogas.map((yoga) => yoga.intensity))];
   const durations = [...new Set(yogas.map((yoga) => yoga.duration))].sort();
 
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   const { signal } = controller;
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
 
-  //   fetch(
-  //     `https://dummyjson.com/products/search?q=${searchParams.get("name")}`,
-  //     { signal }
-  //   )
-  //     .then((res) => res.json())
-  //     .then((data) => setDuration(data.duration));
+    const duration = searchParams.get("duration");
+    const intensity = searchParams.get("intensity");
+    if (duration && intensity)
+      fetch(`/api/yogas?duration=${duration}&intensity=${intensity}`, {
+        signal,
+      })
+        .then((res) => res.json())
+        .then((data) => setDuration(data.duration));
 
-  //   //* useEffect return -> cleanup function
-  //   return () => {
-  //     console.log("unmount");
-  //     controller.abort();
-  //   };
-  // }, [searchParams]);
+    //* useEffect return -> cleanup function
+    return () => {
+      console.log("unmount");
+      controller.abort();
+    };
+  }, [searchParams]);
+
+  const filteredYogas = yogas.filter(
+    (yoga) =>
+      (searchParams.get("duration") === "" ||
+        yoga.duration === Number(searchParams.get("duration"))) &&
+      (searchParams.get("intensity") === "" ||
+        yoga.intensity === searchParams.get("intensity"))
+  );
 
   const handleDuration = (event: any) => {
     const duration = event.target.value;
@@ -63,108 +74,111 @@ export default function SearchBar({ yogas }: YogaCardProps) {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 3 }}>
-      <FormControl
-        sx={{
-          m: 2,
-          minWidth: 100,
-          display: "inline",
-          "& > *": { mr: 2, mb: 2 },
-        }}
-      >
-        <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-          <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
-            Duration
-          </InputLabel>
-          <Select
-            sx={{ minWidth: "100px" }}
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={searchParams.get("duration")}
-            onChange={handleDuration}
-            autoWidth
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {durations.map((duration) => (
-              <MenuItem key={duration} value={duration}>
-                {duration}
+    <>
+      <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 3 }}>
+        <FormControl
+          sx={{
+            m: 2,
+            minWidth: 100,
+            display: "inline",
+            "& > *": { mr: 2, mb: 2 },
+          }}
+        >
+          <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
+            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+              Duration
+            </InputLabel>
+            <Select
+              sx={{ minWidth: "100px" }}
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={searchParams.get("duration")}
+              onChange={handleDuration}
+              autoWidth
+            >
+              <MenuItem value="">
+                <em>None</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {durations.map((duration) => (
+                <MenuItem key={duration} value={duration}>
+                  {duration}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-          <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
-            Intensity
-          </InputLabel>
-          <Select
-            sx={{ minWidth: "150px" }}
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={searchParams.get("intensity")}
-            onChange={handleIntensity}
-            autoWidth
-            label="Intensity"
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {levels.map((level) => (
-              <MenuItem key={level} value={level}>
-                {level}
+          <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
+            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+              Intensity
+            </InputLabel>
+            <Select
+              sx={{ minWidth: "150px" }}
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={searchParams.get("intensity")}
+              onChange={handleIntensity}
+              autoWidth
+              label="Intensity"
+            >
+              <MenuItem value="">
+                <em>None</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {levels.map((level) => (
+                <MenuItem key={level} value={level}>
+                  {level}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-          <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
-            Instructor
-          </InputLabel>
-          <Select
-            sx={{ minWidth: "100px" }}
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={searchParams.get("instructor")}
-            onChange={handleInstructor}
-            autoWidth
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {instructors.map((instructor) => (
-              <MenuItem key={instructor} value={instructor}>
-                {instructor}
+          <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
+            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+              Instructor
+            </InputLabel>
+            <Select
+              sx={{ minWidth: "100px" }}
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={searchParams.get("instructor")}
+              onChange={handleInstructor}
+              autoWidth
+            >
+              <MenuItem value="">
+                <em>None</em>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {instructors.map((instructor) => (
+                <MenuItem key={instructor} value={instructor}>
+                  {instructor}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-          <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
-            Page
-          </InputLabel>
-          <Select
-            sx={{ minWidth: "100px" }}
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={searchParams.get("page")}
-            onChange={handlePage}
-            autoWidth
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {pages.map((page) => (
-              <MenuItem key={page} value={page}>
-                {page}
+          <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
+            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+              Page
+            </InputLabel>
+            <Select
+              sx={{ minWidth: "100px" }}
+              labelId="demo-simple-select-autowidth-label"
+              id="demo-simple-select-autowidth"
+              value={searchParams.get("page")}
+              onChange={handlePage}
+              autoWidth
+            >
+              <MenuItem value="">
+                <em>None</em>
               </MenuItem>
-            ))}
-          </Select>
+              {pages.map((page) => (
+                <MenuItem key={page} value={page}>
+                  {page}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </FormControl>
-      </FormControl>
-    </Box>
+      </Box>
+      <FilteredYogas yogas={yogas} filteredYogas={filteredYogas} />
+    </>
   );
 }

@@ -1,5 +1,4 @@
 import.meta.env.VITE_AIRTABLE_API_KEY;
-import YogaCard from "../components/YogaCard";
 import Banner from "../components/Banner";
 import SearchBar from "../components/SearchBar";
 import { useState, useEffect } from "react";
@@ -25,7 +24,6 @@ export default function Homepage({ user, setUser }: HomepageProps) {
     <>
       <Banner />
       <SearchBar yogas={yogas} />
-      <YogaCard yogas={yogas} />
-    </>
+    </> 
   );
 }

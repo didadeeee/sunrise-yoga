@@ -39,4 +39,15 @@ const showSelectedYogas = async (req, res) => {
     });
   };
   
-  module.exports = { showYogas, showSelectedYogas };
+  const filteredYogas = (duration, intensity, callback) => {
+    const query = `SELECT * FROM yoga WHERE duration = ? AND intensity = ?`;
+    const values = [duration, intensity];
+    connection.query(query, values, (error, results) => {
+      if (error) {
+        return callback(error);
+      }
+      return callback(null, results);
+    });
+  };
+
+  module.exports = { showYogas, showSelectedYogas, filteredYogas };

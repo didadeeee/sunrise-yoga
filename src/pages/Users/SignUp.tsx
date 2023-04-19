@@ -81,22 +81,26 @@ export default function SignUp({ setUser }: SignUpProps) {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    window.alert(
-      state.email + " Account has been created successfully. Please Login."
-    );
-    fetch("/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formik.values),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-    // handleBirthday();
-    console.log("submitted");
-    navigate("/users/login");
+    try {
+      event.preventDefault();
+      window.alert(
+        state.email + " Account has been created successfully. Please Login."
+      );
+      fetch("/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formik.values),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
+      // handleBirthday();
+      console.log("submitted");
+      navigate("/users/login");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
