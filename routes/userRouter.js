@@ -1,10 +1,11 @@
 const userController = require("../controllers/usersController");
+const userCtrl = require("../controllers/usersCtrl");
 const express = require("express");
 const router = express.Router();
 
 // (/api/users)
-router.post("/", userController.create);
+router.post("/", userCtrl.create);
 router.post("/login", userController.login);
-router.post("/setbirthday", userController.setBirthday);
+router.post("/setbirthday", userCtrl.setBirthday);
 
 module.exports = router;

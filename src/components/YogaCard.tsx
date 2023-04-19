@@ -41,7 +41,8 @@ export default function YogaCard({ yogas }: YogaCardProps) {
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="subtitle1" component="h2">
-                    {yoga.title} by {yoga.instructor}
+                    {yoga.title}
+                    {/* by {yoga.instructor} */}
                   </Typography>
                   <Typography gutterBottom variant="subtitle1" component="h2">
                     {yoga.duration} minutes

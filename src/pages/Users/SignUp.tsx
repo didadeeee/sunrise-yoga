@@ -94,7 +94,7 @@ export default function SignUp({ setUser }: SignUpProps) {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
-    handleBirthday();
+    // handleBirthday();
     console.log("submitted");
     navigate("/users/login");
   };

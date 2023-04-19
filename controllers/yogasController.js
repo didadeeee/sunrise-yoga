@@ -6,7 +6,7 @@ const showYogas = async (req, res) => {
       console.error("Error acquiring client", err.stack);
       return res.status(500).json({ message: "Error acquiring client" });
     }
-    client.query("SELECT * FROM yogas", (err, result) => {
+    client.query("SELECT * FROM yoga", (err, result) => {
       if (err) {
         console.error("Error executing query", err.stack);
         return res.status(500).json({ message: "Error executing query" });
@@ -19,14 +19,14 @@ const showYogas = async (req, res) => {
 
 
 const showSelectedYogas = async (req, res) => {
-    const name = req.params.id;
+    const id = req.params.id;
     pool.connect((err, client, done) => {
       if (err) {
         console.error("Error acquiring client", err.stack);
         return res.status(500).json({ message: "Error acquiring client" });
       }
       client.query(
-        `SELECT * FROM yogas WHERE id = '${name}';`,
+        `SELECT * FROM yoga WHERE id = '${id}';`,
         (err, result) => {
           if (err) {
             console.error("Error executing query", err.stack);
