@@ -15,10 +15,8 @@ type YogaCardProps = {
 const pages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function SearchBar({ yogas }: YogaCardProps) {
-  const [duration, setDuration] = useState([]);
-  const [intensity, setIntensity] = useState([]);
-  const [instructor, setInstructor] = useState([]);
-  const [page, setPage] = useState(0);
+  const [filters, setFilters] = useState([]);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const instructors = [...new Set(yogas.map((yoga) => yoga.instructor))];
@@ -36,7 +34,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
         signal,
       })
         .then((res) => res.json())
-        .then((data) => setDuration(data.duration));
+        .then((data) => setFilters(data.filters));
 
     //* useEffect return -> cleanup function
     return () => {

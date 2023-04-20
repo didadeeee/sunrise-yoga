@@ -14,15 +14,28 @@ CREATE TABLE Instructor (
   id SERIAL PRIMARY KEY,
   Yoga_id INT NOT NULL,
   name VARCHAR NOT NULL,
-  handle VARCHAR UNIQUE NOT NULL,
+  handle VARCHAR NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (Yoga_id) REFERENCES Yoga(id)
 );
 
-CREATE TABLE "User" (
+// remove unique constraint
+CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  Yoga_id INT NOT NULL,
+  Yoga_id INT,
+  name VARCHAR NOT NULL,
+  email VARCHAR UNIQUE NOT NULL,
+  birthday DATE NOT NULL,
+  password VARCHAR NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  FOREIGN KEY (Yoga_id) REFERENCES Yoga(id)
+);
+
+CREATE TABLE usersyoga (
+  id SERIAL PRIMARY KEY,
+  Yoga_id INT,
   name VARCHAR NOT NULL,
   email VARCHAR UNIQUE NOT NULL,
   birthday DATE NOT NULL,
@@ -60,8 +73,6 @@ VALUES ('Full Body Gentle Yoga Practice for Beginners and Athletes', 'Beginner',
 INSERT INTO Yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
 VALUES ('Yoga For Your Core', 'Beginner', '27', 'https://i.ytimg.com/vi/_Mx24iENIEY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCAEm5jPV576nq0VsUCJMlEwg1QyA', 'https://www.youtube.com/watch?v=_Mx24iENIEY&t=1414s&ab_channel=YogaWithAdriene', 'Who says you cannot have it all? It is all about balance. This session takes you on a journey from deep core activation, through strength and conditioning, on to exquisite rest. All designed to foster a balanced and happy equilibrium for the day.');
 
-All levels are welcome! No matter what your environment is like in this season, take some time to balance the brain and body today. .');
-
 INSERT INTO Instructor (Yoga_id, name, handle)
 VALUES ('1', 'Adrienne', 'Yoga with Adrienne');
 
@@ -83,10 +94,8 @@ VALUES ('6', 'Jessica', 'Jessica Richburg');
 INSERT INTO Instructor (Yoga_id, name, handle)
 VALUES ('7', 'Anna', 'growingannanas');
 
-UPDATE instructor
-SET yoga_id = yoga_id || '{8}'
-WHERE name = 'Flo';
+INSERT INTO Instructor (id, Yoga_id, name, handle)
+VALUES ('1', '9', 'Adrienne', 'Yoga with Adrienne');
 
-UPDATE instructor
-SET yoga_id = yoga_id || '{9}'
-WHERE name = 'Adrienne';
+INSERT INTO Instructor (id, Yoga_id, name, handle)
+VALUES ('5', '8', 'Flo', 'Breathe and Flow');

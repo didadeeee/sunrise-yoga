@@ -64,35 +64,24 @@ cron.schedule("5 4 * * *", async () => {
 });
 
 const create = async (req, res) => {
-  console.log("Creating new user...");
   const { name, email, birthday, password } = req.body;
-  console.log("Name:", name);
-  console.log("Email:", email);
-  console.log("Birthday:", birthday);
-  console.log("Password:", password);
   try {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const { rows } = await pool.query(
-      "INSERT INTO users(name, email, birthday, password, yoga_id) VALUES($1, $2, $3, $4, $5) RETURNING *"[
-        (name, email, hashedPassword, birthday, [1, 2, 3])
-      ]
+      `INSERT INTO users(name, email, birthday, password) VALUES('${name}','${email}', '${birthday}', '${hashedPassword}') RETURNING *;`
     );
     const newUser = rows[0];
+    console.log("newUser", newUser);
     res.status(201).json(newUser);
-    console.log("test");
-  } catch (error) {
+    } catch (error) {
     res.status(500).json(error);
   }
 };
 
 const login = async (req, res) => {
   try {
-    const validatedData = await loginSchema.validate(req.body);
-    const { email, password } = validatedData;
-
-    const { rows } = await pool.query("SELECT * FROM User WHERE userid = $1", [
-      email,
-    ]);
+    const { email, password } = req.body;
+    const { rows } = await pool.query(`SELECT * FROM users WHERE email = '${email}'`);
     const user = rows[0];
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });
