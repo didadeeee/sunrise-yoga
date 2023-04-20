@@ -24,52 +24,61 @@ export default function FilteredYogas({
     <>
       <br></br>
       {filteredYogas.length === 0 ? (
-        <Typography variant="h5">
-          No Filtered Yoga Found, Try Other Filters?
-        </Typography>
-      ) : (
-        <></>
-      )}
-      {filteredYogas.length === 0 ? (
-        <YogaCard yogas={yogas} />
+        <>
+          <Typography variant="h5">
+            No Filtered Yoga Found, Try Other Filters?
+          </Typography>
+          <YogaCard yogas={yogas} />
+        </>
       ) : (
         <Container sx={{ py: 6 }} maxWidth="xl">
           <Grid container spacing={4}>
             {filteredYogas.map((yoga) => (
               <Grid item key={yoga.id} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
+                <Link
+                  to={`/yogas/${yoga.id}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  <BookmarkIcon></BookmarkIcon>
-
-                  <CardMedia
-                    component="img"
+                  <Card
                     sx={{
-                      // 16:9
-                      pt: "10%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
-                    image={yoga.thumbnailimageurl}
-                    alt={yoga.title}
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="subtitle1" component="h2">
-                      {yoga.title}
-                      {/* by {yoga.instructor} */}
-                    </Typography>
-                    <Typography gutterBottom variant="subtitle1" component="h2">
-                      {yoga.duration} minutes
-                    </Typography>
-                    <Button size="small">{yoga.intensity}</Button>
-                    <Typography variant="subtitle1">
-                      {yoga.description}
-                    </Typography>
-                    <Link to={`/yogas/${yoga.id}`}>Learn More</Link>
-                  </CardContent>
-                </Card>
+                  >
+                    <BookmarkIcon></BookmarkIcon>
+
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        // 16:9
+                        pt: "10%",
+                      }}
+                      image={yoga.thumbnailimageurl}
+                      alt={yoga.title}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography
+                        gutterBottom
+                        variant="subtitle1"
+                        component="h2"
+                      >
+                        {yoga.title} by {yoga.name}
+                      </Typography>
+                      <Typography
+                        gutterBottom
+                        variant="subtitle1"
+                        component="h2"
+                      >
+                        {yoga.duration} minutes
+                      </Typography>
+                      <Button size="small">{yoga.intensity}</Button>
+                      <Typography variant="subtitle1">
+                        {yoga.description}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
               </Grid>
             ))}
           </Grid>

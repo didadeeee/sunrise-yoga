@@ -15,6 +15,7 @@ CREATE TABLE Instructor (
   Yoga_id INT NOT NULL,
   name VARCHAR NOT NULL,
   handle VARCHAR NOT NULL,
+  avatar VARCHAR,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW(),
   FOREIGN KEY (Yoga_id) REFERENCES Yoga(id)
@@ -99,3 +100,40 @@ VALUES ('1', '9', 'Adrienne', 'Yoga with Adrienne');
 
 INSERT INTO Instructor (id, Yoga_id, name, handle)
 VALUES ('5', '8', 'Flo', 'Breathe and Flow');
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/ytc/AGIKgqMjL_sxyKbuze9liPIXaM5EYxXGxa69J3bE79aP2Q=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 1;
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/AyujjrnTpLDbINUeVwhy8oGiYCZUlaXU9QG8ku0fp6eIC-_tiuLuf3IMXb-Y6NP93-zZBpNk=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 2;
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/sK43gp6tWrF6peB46z2zi5IdOfgWuMzUJzVdpjB1IzlcmS7t6_sviJjj0UmsnJrxri0SO3DaW4k=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 3;
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/ytc/AGIKgqM7z7LW_ML1WtIje3vViiJOlJ7OXMSgfQW6i4kZHvY=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 4;
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/ncpSh1RoLkfwE_NqpeY5Cxs-y-CfoQLYWY9TYT6vWGcyDAlc_ix3T570avJm1-N5YM2YCyRbkA=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 5;
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/ytc/AGIKgqM7z7LW_ML1WtIje3vViiJOlJ7OXMSgfQW6i4kZHvY=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 6;
+
+UPDATE Instructor
+SET avatar = 'https://yt3.googleusercontent.com/ytc/AGIKgqMexaV0Firm0zPaAtGK7FmFOypb3OTgCfm4ef53sg=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 7;
+
+UPDATE Yoga
+SET title = 'Yoga Full Body Stretch', intensity = 'Beginner', duration = '10', thumbnailimageurl = 'https://i.ytimg.com/vi/4stMjL9PioE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlxZcLAhyqigRSysLRVuUKYDSBmQ', videoembeddedurl = 'https://www.youtube.com/watch?v=4stMjL9PioE&ab_channel=YogaWithBird', description = 'https://www.youtube.com/watch?v=4stMjL9PioE&ab_channel=YogaWithBird'
+WHERE id = 4;
+
+
+UPDATE Instructor
+SET name = 'Bird', handle = 'Yoga with Bird', avatar = 'https://yt3.googleusercontent.com/gytX6pfqzMfjIAor2thgHmBi2KqlvB2SkxmLzyXRyBYRE5J686R_iKMfcAG__tE1yD3VA4GW5_I=s176-c-k-c0x00ffffff-no-rj'
+WHERE id = 4;

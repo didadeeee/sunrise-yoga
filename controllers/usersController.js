@@ -1,11 +1,12 @@
-const User = require("../models/User");
+const pool = require("../config/database");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const mailgen = require("mailgen");
 const cron = require("node-cron");
-
 const JWT_SECRET = process.env.JWT_SECRET;
+
+const SALT_ROUNDS = 10;
 
 const setBirthday = async (req, res) => {
   const { state } = req.body;
@@ -63,51 +64,69 @@ cron.schedule("5 4 * * *", async () => {
 });
 
 const create = async (req, res) => {
-  const { password } = req.body;
-  if (password.length < 5) {
-    res
-      .status(400)
-      .json({ message: "Password is too short, Please Try Again." });
-    return;
-  }
-
+  const { name, email, birthday, password } = req.body;
   try {
-    const user = await User.create(req.body);
-    const payload = { user };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 60 }); // 1hr
-    res.status(201).json(token);
-  } catch (error) {
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const { rows } = await pool.query(
+      `INSERT INTO users(name, email, birthday, password) VALUES('${name}','${email}', '${birthday}', '${hashedPassword}') RETURNING *;`
+    );
+    const newUser = rows[0];
+    console.log("newUser", newUser);
+    res.status(201).json(newUser);
+    } catch (error) {
     res.status(500).json(error);
   }
 };
 
 const login = async (req, res) => {
-  const { email, password, birthday } = req.body;
-  if (password.length < 5) {
-    res.status(400).json({ message: "Incorrect Password" });
-    return;
-  }
-
   try {
-    const user = await User.findOne({ email });
-    if (user === null) {
-      res.status(401).json({ message: "No user found, Please sign up." });
-      return;
+    const { email, password } = req.body;
+    const { rows } = await pool.query(`SELECT * FROM users WHERE email = '${email}'`);
+    const user = rows[0];
+    if (!user) {
+      return res.status(400).json({ message: "User does not exist" });
     }
-
     const match = await bcrypt.compare(password, user.password);
-    if (match) {
-      const payload = { user };
-      const token = jwt.sign(payload, JWT_SECRET, { expiresIn: 60 });
-      res.status(200).json({ token });
-      console.log("user login successful");
-    } else {
-      res.status(401).json({ message: "Wrong password" });
+    if (!match) {
+      return res.status(401).json({ message: "Wrong password" });
     }
+    const payload = { user };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "2h" });
+    res.status(200).json({ token, user });
   } catch (error) {
-    res.status(500).json(error);
+    if (error && error.name === "ValidationError") {
+      return res.status(400).json({ message: error.errors.join(", ") });
+    }
+    res.status(500).json({ message: error.message });
   }
 };
+
+// const isAuth = async (req, res, next) => {
+//   const token = req.headers.authorization.replace(/"/g, "").split(" ")[1];
+//   console.log("token in authcontroller", token);
+
+//   if (token) {
+//     try {
+//       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//       const { rows } = await pool.query(
+//         "SELECT * FROM customers WHERE email = $1",
+//         [decoded.customer.email]
+//       );
+
+//       if (rows.length > 0) {
+//         req.customer = decoded.customer;
+//         next();
+//       } else {
+//         res.status(403).send("Forbidden");
+//       }
+//     } catch (error) {
+//       res.status(401).send("Invalid token");
+//     }
+//   } else {
+//     res.status(401).send("Unauthorized");
+//   }
+// };
 
 module.exports = {
   create,

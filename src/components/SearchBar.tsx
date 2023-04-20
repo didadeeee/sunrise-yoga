@@ -3,6 +3,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 import FilteredYogas from "./FilteredYogas";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -16,10 +18,9 @@ const pages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function SearchBar({ yogas }: YogaCardProps) {
   const [filters, setFilters] = useState([]);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const instructors = [...new Set(yogas.map((yoga) => yoga.instructor))];
+  const instructors = [...new Set(yogas.map((yoga) => yoga.name))];
   const levels = [...new Set(yogas.map((yoga) => yoga.intensity))];
   const durations = [...new Set(yogas.map((yoga) => yoga.duration))].sort();
 
@@ -29,13 +30,17 @@ export default function SearchBar({ yogas }: YogaCardProps) {
 
     const duration = searchParams.get("duration");
     const intensity = searchParams.get("intensity");
-    if (duration && intensity)
-      fetch(`/api/yogas?duration=${duration}&intensity=${intensity}`, {
-        signal,
-      })
+    const name = searchParams.get("name");
+    // const page = searchParams.get("page");
+    if (duration || intensity || name)
+      fetch(
+        `/api/yogas?duration=${duration}&intensity=${intensity}&name=${name}`,
+        {
+          signal,
+        }
+      )
         .then((res) => res.json())
         .then((data) => setFilters(data.filters));
-
     //* useEffect return -> cleanup function
     return () => {
       console.log("unmount");
@@ -48,9 +53,12 @@ export default function SearchBar({ yogas }: YogaCardProps) {
       (searchParams.get("duration") === "" ||
         yoga.duration === Number(searchParams.get("duration"))) &&
       (searchParams.get("intensity") === "" ||
-        yoga.intensity === searchParams.get("intensity"))
+        yoga.intensity === searchParams.get("intensity")) &&
+      (searchParams.get("name") === "" ||
+        yoga.name === searchParams.get("name"))
+    // (searchParams.get("page") === "" ||
+    //   yoga.page === Number(searchParams.get("page")))
   );
-
   const handleDuration = (event: any) => {
     const duration = event.target.value;
     setSearchParams({ ...Object.fromEntries(searchParams), duration });
@@ -62,18 +70,18 @@ export default function SearchBar({ yogas }: YogaCardProps) {
   };
 
   const handleInstructor = (event: any) => {
-    const instructor = event.target.value;
-    setSearchParams({ ...Object.fromEntries(searchParams), instructor });
+    const name = event.target.value;
+    setSearchParams({ ...Object.fromEntries(searchParams), name });
   };
 
-  const handlePage = (event: any) => {
-    const page = event.target.value;
-    setSearchParams({ ...Object.fromEntries(searchParams), page });
-  };
+  // const handlePage = (event: any) => {
+  //   const page = event.target.value;
+  //   setSearchParams({ ...Object.fromEntries(searchParams), page });
+  // };
 
   return (
     <>
-      <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 3 }}>
+      <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 2 }}>
         <FormControl
           sx={{
             m: 2,
@@ -137,7 +145,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
               sx={{ minWidth: "100px" }}
               labelId="demo-simple-select-autowidth-label"
               id="demo-simple-select-autowidth"
-              value={searchParams.get("instructor")}
+              value={searchParams.get("name")}
               onChange={handleInstructor}
               autoWidth
             >
@@ -161,7 +169,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
               labelId="demo-simple-select-autowidth-label"
               id="demo-simple-select-autowidth"
               value={searchParams.get("page")}
-              onChange={handlePage}
+              // onChange={handlePage}
               autoWidth
             >
               <MenuItem value="">
@@ -177,6 +185,11 @@ export default function SearchBar({ yogas }: YogaCardProps) {
         </FormControl>
       </Box>
       <FilteredYogas yogas={yogas} filteredYogas={filteredYogas} />
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 5 }}>
+        <Stack spacing={2}>
+          <Pagination count={10} variant="outlined" color="primary" />
+        </Stack>
+      </Box>
     </>
   );
 }
