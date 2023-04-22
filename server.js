@@ -7,8 +7,6 @@ require("./config/database");
 const userRouter = require("./routes/userRouter");
 const yogaRouter = require("./routes/yogasRouter");
 
-const jwt = require("jsonwebtoken");
-
 const app = express();
 const port = process.env.PORT || 3001;
 

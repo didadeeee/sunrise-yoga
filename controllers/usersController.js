@@ -63,25 +63,12 @@ cron.schedule("5 4 * * *", async () => {
   }
 });
 
-const create = async (req, res) => {
-  const { name, email, birthday, password } = req.body;
-  try {
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const { rows } = await pool.query(
-      `INSERT INTO users(name, email, birthday, password) VALUES('${name}','${email}', '${birthday}', '${hashedPassword}') RETURNING *;`
-    );
-    const newUser = rows[0];
-    console.log("newUser", newUser);
-    res.status(201).json(newUser);
-    } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const { rows } = await pool.query(`SELECT * FROM users WHERE email = '${email}'`);
+    const { rows } = await pool.query(
+      `SELECT * FROM users WHERE email = '${email}'`
+    );
     const user = rows[0];
     if (!user) {
       return res.status(400).json({ message: "User does not exist" });
@@ -99,6 +86,44 @@ const login = async (req, res) => {
     }
     res.status(500).json({ message: error.message });
   }
+};
+
+const create = async (req, res) => {
+  const { name, email, birthday, password } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const { rows } = await pool.query(
+      `INSERT INTO users(name, email, birthday, password) VALUES('${name}','${email}', '${birthday}', '${hashedPassword}') RETURNING *;`
+    );
+    const newUser = rows[0];
+    console.log("newUser", newUser);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const showBookmarkYogas = async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const users_id = decodedToken.user.id;
+  pool.connect((err, client, done) => {
+    if (err) {
+      console.error("Error acquiring client", err.stack);
+      return res.status(500).json({ message: "Error acquiring client" });
+    }
+    client.query(
+      `SELECT *FROM yoga LEFT JOIN usersyoga ON yoga.id = usersyoga.yoga_id LEFT JOIN users ON usersyoga.users_id = users.id WHERE users.id = '${users_id}'`,
+      (err, result) => {
+        if (err) {
+          console.error("Error executing query", err.stack);
+          return res.status(500).json({ message: "Error executing query" });
+        }
+        res.json(result.rows);
+        client.release();
+      }
+    );
+  });
 };
 
 // const isAuth = async (req, res, next) => {
@@ -132,4 +157,5 @@ module.exports = {
   create,
   login,
   setBirthday,
+  showBookmarkYogas,
 };

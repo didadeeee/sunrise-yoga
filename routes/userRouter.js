@@ -6,5 +6,6 @@ const router = express.Router();
 router.post("/signup", userController.create);
 router.post("/login", userController.login);
 router.post("/setbirthday", userController.setBirthday);
+router.get("/bookmarks", userController.showBookmarkYogas);
 
 module.exports = router;

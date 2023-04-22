@@ -27,6 +27,31 @@ export default function YogaPage() {
     fetchYoga();
   }, [id]);
 
+  const handleBookmark = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Login to Bookmark your favourite Yoga Tutorials! :)");
+        throw new Error("No token found");
+      }
+      const response = await fetch(`/api/yogas/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          yoga_id: id,
+        }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error(error);
+      return { error: (error as Error).message };
+    }
+  };
+
   return (
     <Container maxWidth="xl">
       {yoga && (
@@ -69,11 +94,7 @@ export default function YogaPage() {
                   </Typography>
                   <Box className="YogaPageButton" sx={{ ml: 13 }}>
                     <Button variant="outlined">
-                      <BookmarkBorderIcon>
-                        <Link to="" style={{ textDecoration: "none" }}>
-                          Bookmark
-                        </Link>
-                      </BookmarkBorderIcon>
+                      <BookmarkBorderIcon onClick={handleBookmark} />
                     </Button>
                   </Box>
                 </Grid>

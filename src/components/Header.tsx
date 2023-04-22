@@ -2,6 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -24,7 +25,7 @@ interface User {
 export default function Header({ user, setUser }: HeaderProps) {
   
   const handleLogout = async () => {
-    logout();
+    localStorage.removeItem("token");
     setUser(null);
     console.log("user has been logged out successfully.");
   };
@@ -41,6 +42,9 @@ export default function Header({ user, setUser }: HeaderProps) {
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex", alignItems: "center", pr: 1 }}>
+          <a href="/users/bookmarks" style={{ marginRight: "16px" }}>
+              <TurnedInNotIcon />
+            </a>
             <a href="/users/signup" style={{ marginRight: "16px" }}>
               <AccountCircleIcon />
             </a>
