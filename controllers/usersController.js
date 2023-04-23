@@ -104,6 +104,9 @@ const create = async (req, res) => {
 };
 
 const showBookmarkYogas = async (req, res) => {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: 'Authorization header is missing' });
+  }
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
   const users_id = decodedToken.user.id;

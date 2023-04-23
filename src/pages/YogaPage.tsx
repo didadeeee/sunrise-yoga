@@ -11,18 +11,31 @@ import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import "./YogaPage.css";
 
 export default function YogaPage() {
   const [yoga, setYoga] = useState<Yoga | null>(null);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchYoga = async () => {
-      const response = await fetch(`/api/yogas/${id}`);
-      const yoga = await response.json();
-      setYoga(yoga);
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("No token found");
+        }
+        const response = await fetch(`/api/yogas/${id}`);
+        const yoga = await response.json();
+        // if (yoga.usersyoga_yoga_id && yoga.usersyoga_yoga_id.length > 0) {
+        //   setIsBookmarked(true);
+        // }
+        setYoga(yoga);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchYoga();
   }, [id]);
@@ -45,6 +58,33 @@ export default function YogaPage() {
         }),
       });
       const data = await response.json();
+      setIsBookmarked(true);
+      return data;
+    } catch (error) {
+      console.error(error);
+      return { error: (error as Error).message };
+    }
+  };
+
+  const handleUnbookmark = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Login to Bookmark your favourite Yoga Tutorials! :)");
+        throw new Error("No token found");
+      }
+      const response = await fetch(`/api/yogas/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          yoga_id: id,
+        }),
+      });
+      const data = await response.json();
+      setIsBookmarked(false);
       return data;
     } catch (error) {
       console.error(error);
@@ -94,7 +134,11 @@ export default function YogaPage() {
                   </Typography>
                   <Box className="YogaPageButton" sx={{ ml: 13 }}>
                     <Button variant="outlined">
-                      <BookmarkBorderIcon onClick={handleBookmark} />
+                      {isBookmarked ? (
+                        <BookmarkIcon onClick={handleUnbookmark} />
+                      ) : (
+                        <BookmarkBorderIcon onClick={handleBookmark} />
+                      )}
                     </Button>
                   </Box>
                 </Grid>

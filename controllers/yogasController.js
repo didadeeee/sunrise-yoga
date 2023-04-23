@@ -74,4 +74,31 @@ const bookmarkYogas = async (req, res) => {
   }
 };
 
-module.exports = { showYogas, showSelectedYogas, filteredYogas, bookmarkYogas };
+const unbookmarkYogas = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const users_id = decodedToken.user.id;
+    const yoga_id = req.params.id;
+    if (!yoga_id) {
+      throw new Error("yoga_id is required");
+    }
+    const result = await pool.query(
+      `DELETE FROM usersyoga WHERE users_id = '${users_id}' AND yoga_id = '${yoga_id}';`
+    );
+    return res.json({ message: "Bookmark deleted" });
+  } catch (error) {
+    if (error && error.name === "ValidationError") {
+      throw new Error(error.errors.join(", "));
+    }
+  }
+};
+
+
+module.exports = {
+  showYogas,
+  showSelectedYogas,
+  filteredYogas,
+  bookmarkYogas,
+  unbookmarkYogas,
+};
