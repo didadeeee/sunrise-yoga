@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { Link } from "react-router-dom";
-import { getUser, signUp } from "../../utilities/users-service";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
@@ -10,20 +8,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { User } from "../../Type";
+import { User, SignUpProps } from "../../Type";
 import "./EditAccount.css";
 
-export default function EditAccount() {
-  const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState<User>({
-    name: "",
-    email: "",
-    password: "",
-    birthday: new Date(),
-    created_at: new Date(),
-    updated_at: new Date(),
-  });
+type EditAccountProps = {
+  user: User;
+  setUser: any;
+};
 
+export default function EditAccount({ user, setUser }: EditAccountProps) {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateSchema = Yup.object().shape({
@@ -76,13 +70,13 @@ export default function EditAccount() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const userData = await response.json();
-        setUserData(userData);
+        const user = await response.json();
+        setUser(user);
         formik.setValues({
-          name: userData.name,
-          email: userData.email,
-          birthday: userData.birthday,
-          password: userData.password,
+          name: user.name,
+          email: user.email,
+          birthday: user.birthday,
+          password: user.password,
         });
       } catch (error) {
         console.error(error);
@@ -94,15 +88,20 @@ export default function EditAccount() {
   const handleUpdate = (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
+      const birthdayPlusOne = dayjs(user.birthday).add(1, "day").toDate();
+      const valueswithUpdatedBirthday = {
+        ...formik.values,
+        birthday: birthdayPlusOne,
+      };
       const token = localStorage.getItem("token");
-      window.alert("Dear " + userData.name + ", account has been updated successfully.");
+      window.alert("Account has been updated successfully.");
       fetch("/api/users/edit", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formik.values),
+        body: JSON.stringify(valueswithUpdatedBirthday),
       })
         .then((response) => response.json())
         .then((data) => console.log("data", data));
@@ -115,10 +114,20 @@ export default function EditAccount() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("handlechange");
-    setUserData({
-      ...userData,
+    setUser({
+      ...user,
       [event.target.name]: event.target.value,
     });
+  };
+
+  const handleBirthday = (date: any) => {
+    if (date) {
+      const dateObject = dayjs(date).toDate();
+      setUser({
+        ...user,
+        birthday: dateObject,
+      });
+    }
   };
 
   return (
@@ -179,30 +188,17 @@ export default function EditAccount() {
           />
         </Box>
 
-        <Box className="R1">
-          <TextField
-            id="outlined-basic"
-            label="Birthday"
-            variant="outlined"
-            type="date"
-            name="birthday"
-            value={formik.values.birthday}
-            helperText={formik.errors.birthday ? formik.errors.birthday : ""}
-            InputLabelProps={{
-              style: { color: "#000000" },
-              shrink: true,
-            }}
-            onChange={formik.handleChange}
-            className="my-textfield"
-            required
-          />
-        </Box>
+        <DatePicker
+          label="birthday"
+          value={dayjs(formik.values.birthday)}
+          onChange={handleBirthday}
+        />
 
         <Box className="R1">
           <Button variant="contained" type="submit">
             Update
           </Button>
-          <p className="error-message">&nbsp;{userData.error}</p>
+          <p className="error-message">&nbsp;{user.error}</p>
         </Box>
       </form>
     </Box>

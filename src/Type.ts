@@ -27,7 +27,7 @@ export type User = {
   };
 
   export type SignUpProps = {
-    setUser: (user:any) => void;
+    setUser: (user: User) => void;
   }
 
   export type State = {
