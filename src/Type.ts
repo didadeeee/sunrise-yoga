@@ -9,6 +9,19 @@ export type User = {
     updated_at?: Date;
     error?: string;
   }
+
+  
+export type EditUser = {
+  name: string;
+  email: string;
+  password?: string;
+  birthday: Date;
+  yoga_id?: number;
+  created_at?: Date;
+  updated_at?: Date;
+  error?: string;
+}
+
   
   export type Yoga = {
     id: string;

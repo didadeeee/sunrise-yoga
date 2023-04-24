@@ -44,7 +44,7 @@ const showSelectedYogas = async (req, res) => {
 
 const filteredYogas = (duration, intensity, name, callback) => {
   const query = `SELECT *FROM yoga LEFT JOIN instructoryoga ON yoga.id = instructoryoga.yoga_id LEFT JOIN instructor ON instructoryoga.instructor_id = instructor.id WHERE yoga.duration = ? AND yoga.intensity = ? AND instructor.name = ? `;
-  const values = [duration, intensity, name];
+  const values = [duration, intensity, name];   
   connection.query(query, values, (error, results) => {
     if (error) {
       return callback(error);

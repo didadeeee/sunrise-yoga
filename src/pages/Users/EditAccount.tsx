@@ -8,11 +8,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { User, SignUpProps } from "../../Type";
+import { EditUser, SignUpProps } from "../../Type";
 import "./EditAccount.css";
 
 type EditAccountProps = {
-  user: User;
+  user: EditUser;
   setUser: any;
 };
 
@@ -26,18 +26,18 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
       .email("Please enter a valid email")
       .required("This field is required"),
     birthday: Yup.date().required("This field is required"),
-    password: Yup.string()
-      .required("This field is required")
-      .min(5, "Pasword must be 5 or more characters")
-      .matches(/\d/, "Password should contain at least one number")
-      .matches(
-        /(?=.*[a-z])(?=.*[A-Z])\w+/,
-        "Password ahould contain at least one uppercase and lowercase character"
-      )
-      .matches(
-        /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/,
-        "Password should contain at least one special character"
-      ),
+    // password: Yup.string()
+    //   .required("This field is required")
+    //   .min(5, "Pasword must be 5 or more characters")
+    //   .matches(/\d/, "Password should contain at least one number")
+    //   .matches(
+    //     /(?=.*[a-z])(?=.*[A-Z])\w+/,
+    //     "Password ahould contain at least one uppercase and lowercase character"
+    //   )
+    //   .matches(
+    //     /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/,
+    //     "Password should contain at least one special character"
+    //   ),
   });
 
   const formik = useFormik({
@@ -45,7 +45,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
       name: "",
       email: "",
       birthday: "",
-      password: "",
+      // password: "",
     },
     validationSchema: validateSchema,
     onSubmit: (values, { resetForm }) => {
@@ -63,6 +63,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
+          alert("Login to View Account Details");
           throw new Error("No token found");
         }
         const response = await fetch("/api/users/account", {
@@ -76,7 +77,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
           name: user.name,
           email: user.email,
           birthday: user.birthday,
-          password: user.password,
+          // password: user.password,
         });
       } catch (error) {
         console.error(error);
@@ -85,7 +86,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
     fetchUserData();
   }, []);
 
-  const handleUpdate = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       const birthdayPlusOne = dayjs(user.birthday).add(1, "day").toDate();
@@ -95,17 +96,16 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
       };
       const token = localStorage.getItem("token");
       window.alert("Account has been updated successfully.");
-      fetch("/api/users/edit", {
+      const response = await fetch("/api/users/edit", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(valueswithUpdatedBirthday),
-      })
-        .then((response) => response.json())
-        .then((data) => console.log("data", data));
-      console.log("updated");
+      });
+      const updatedUser = await response.json();
+      setUser(updatedUser);
       navigate("/users/account");
     } catch (err) {
       console.log(err);
@@ -170,7 +170,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
           />
         </Box>
 
-        <Box className="R1">
+        {/* <Box className="R1">
           <TextField
             id="outlined-basic"
             label="Password"
@@ -186,7 +186,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
             className="my-textfield"
             required
           />
-        </Box>
+        </Box> */}
 
         <DatePicker
           label="birthday"

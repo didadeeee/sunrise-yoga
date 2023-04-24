@@ -9,6 +9,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   user: User;
@@ -22,15 +23,25 @@ interface User {
   birthday: Date;
 }
 
-export default function Header({ user, setUser }: HeaderProps) {
+export default function UserHeader ({ user, setUser }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+  const navigate = useNavigate();
+  
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("token");
+    setUser(null);
+    setAnchorEl(null);
+    navigate("/");
+    console.log("user has been logged out successfully.");
+
   };
 
   return (
@@ -70,20 +81,22 @@ export default function Header({ user, setUser }: HeaderProps) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>
-                  <Link
-                    to="/users/signup"
-                    style={{ textDecoration: "none", color: "inherit" }}
-                  >
-                    Sign Up
+                <MenuItem onClick={handleClose} className="menuLink">
+                  <Link to="/users/account" style={{ textDecoration: "none", color: "inherit"  }}>
+                    My Account
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <Link
-                    to="/users/login"
-                    style={{ textDecoration: "none", color: "inherit" }}
+                    to="/users/bookmarks"
+                    style={{ textDecoration: "none", color: "inherit"  }}
                   >
-                    Login
+                    Favourite Tutorials
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <Link to="" style={{ textDecoration: "none", color: "inherit"  }}>
+                    Log Out
                   </Link>
                 </MenuItem>
               </Menu>

@@ -10,10 +10,11 @@ import YogaBookmarksPage from "../src/pages/YogaBookmarkPage";
 import Header from "../src/components/Header";
 import Footer from "../src/components/Footer";
 import AccountPage from "./pages/Users/AccountPage";
-import { getToken, getUser } from "../src/utilities/users-service";
+import { getUser } from "../src/utilities/users-service";
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { User } from "./Type";
+import UserHeader from "./components/UserHeader";
+import PageNotExist from "./pages/PageNotExist";
 import "./App.css";
 
 function App() {
@@ -40,20 +41,30 @@ function App() {
     fetchUserData();
   }, []);
 
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <>
-        <Header user={user} setUser={setUser} />
+        {user ? (
+          <UserHeader user={user} setUser={setUser} />
+        ) : (
+          <Header user={user} setUser={setUser} />
+        )}
         <CssBaseline />
         <Routes>
           <Route path="/users/signup" element={<SignUp />} />
           <Route path="/users/login" element={<Login setUser={setUser} />} />
-          <Route path="/users/account" element={<AccountPage user={user} setUser={setUser} />} />
-          <Route path="/users/edit" element={<EditAccount user={user} setUser={setUser} />} />
+          <Route
+            path="/users/account"
+            element={<AccountPage user={user} setUser={setUser} />}
+          />
+          <Route
+            path="/users/edit"
+            element={<EditAccount user={user} setUser={setUser} />}
+          />
           <Route path="/users/bookmarks" element={<YogaBookmarksPage />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/yogas/:id" element={<YogaPage />} />
+          <Route path="/*" element={<PageNotExist />} />
         </Routes>
         <Footer></Footer>
       </>

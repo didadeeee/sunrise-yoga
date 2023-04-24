@@ -14,8 +14,6 @@ type YogaCardProps = {
   yogas: Yoga[];
 };
 
-const pages = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 export default function SearchBar({ yogas }: YogaCardProps) {
   const [filters, setFilters] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,6 +57,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
     // (searchParams.get("page") === "" ||
     //   yoga.page === Number(searchParams.get("page")))
   );
+
   const handleDuration = (event: any) => {
     const duration = event.target.value;
     setSearchParams({ ...Object.fromEntries(searchParams), duration });
@@ -159,35 +158,18 @@ export default function SearchBar({ yogas }: YogaCardProps) {
               ))}
             </Select>
           </FormControl>
-
-          <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
-              Page
-            </InputLabel>
-            <Select
-              sx={{ minWidth: "100px" }}
-              labelId="demo-simple-select-autowidth-label"
-              id="demo-simple-select-autowidth"
-              value={searchParams.get("page")}
-              // onChange={handlePage}
-              autoWidth
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {pages.map((page) => (
-                <MenuItem key={page} value={page}>
-                  {page}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </FormControl>
       </Box>
       <FilteredYogas yogas={yogas} filteredYogas={filteredYogas} />
       <Box sx={{ display: "flex", justifyContent: "center", mb: 5 }}>
         <Stack spacing={2}>
-          <Pagination count={10} variant="outlined" color="primary" />
+          <Pagination
+            count={5}
+            variant="outlined"
+            color="primary"
+            // value={searchParams.get("page")}
+            // onChange={handlePage}
+          />
         </Stack>
       </Box>
     </>

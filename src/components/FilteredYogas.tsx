@@ -1,9 +1,7 @@
-import type { Yoga } from "../../src/Type";
-import.meta.env.VITE_AIRTABLE_API_KEY;
+import type { Yoga } from "../Type";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -46,8 +44,6 @@ export default function FilteredYogas({
                       flexDirection: "column",
                     }}
                   >
-                    <BookmarkIcon></BookmarkIcon>
-
                     <CardMedia
                       component="img"
                       sx={{

@@ -104,7 +104,7 @@ const create = async (req, res) => {
 };
 
 const updateAccount = async (req, res) => {
-  const { name, email, birthday, password } = req.body;
+  const { name, email, birthday } = req.body;
   if (!req.headers.authorization) {
     return res.status(401).json({ message: "Authorization header is missing" });
   }
@@ -112,10 +112,9 @@ const updateAccount = async (req, res) => {
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
   const users_id = decodedToken.user.id;
   try {
-    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const { rows } = await pool.query(
       `UPDATE users
-      SET name = '${name}', email = '${email}', birthday = '${birthday}', password = '${hashedPassword}'
+      SET name = '${name}', email = '${email}', birthday = '${birthday}'
       WHERE id = '${users_id}'
       RETURNING *;`
     );
@@ -126,6 +125,33 @@ const updateAccount = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+// const updateAccount = async (req, res) => {
+//   const { name, email, birthday, password } = req.body;
+//   if (!req.headers.authorization) {
+//     return res.status(401).json({ message: "Authorization header is missing" });
+//   }
+//   const token = req.headers.authorization.split(" ")[1];
+//   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+//   const users_id = decodedToken.user.id;
+//   try {
+//     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+//     const { rows } = await pool.query(
+//       `UPDATE users
+//       SET name = '${name}', email = '${email}', birthday = '${birthday}', password = '${hashedPassword}'
+//       WHERE id = '${users_id}'
+//       RETURNING *;`
+//     );
+//     const newUser = rows[0];
+//     console.log("newUser", newUser);
+//     res.status(201).json(newUser);
+//   } catch (error) {
+//     res.status(500).json(error);
+//   }
+// };
+
+
+
 
 const showBookmarkYogas = async (req, res) => {
   if (!req.headers.authorization) {

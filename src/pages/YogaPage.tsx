@@ -33,27 +33,28 @@ export default function YogaPage() {
     };
     fetchYoga();
   }, [id]);
+  
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch("/api/users/checkbookmark", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const userYoga = await response.json();
-        // const isBookmarked = userYoga.some((item) => item.yoga_id === id);
-        setUserYoga(userYoga);
-        setIsBookmarked(isBookmarked);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await fetch("/api/users/checkbookmark", {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  //       const userYoga = await response.json();
+  //       // const isBookmarked = userYoga.some((item) => item.yoga_id === id);
+  //       setUserYoga(userYoga);
+  //       setIsBookmarked(isBookmarked);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    fetchUser();
-  }, [id, setIsBookmarked]);
+  //   fetchUser();
+  // }, [id, setIsBookmarked]);
 
   const handleBookmark = async () => {
     try {
