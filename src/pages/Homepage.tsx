@@ -2,15 +2,10 @@ import.meta.env.VITE_AIRTABLE_API_KEY;
 import Banner from "../components/Banner";
 import SearchBar from "../components/SearchBar";
 import { useState, useEffect } from "react";
-import type { Yoga, User } from "../../src/Type";
+import type { Yoga } from "../../src/Type";
 import axios from "axios";
 
-interface HomepageProps {
-  user: User;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
-}
-
-export default function Homepage({ user, setUser }: HomepageProps) {
+export default function Homepage() {
   const [yogas, setYogas] = useState<Yoga[]>([]);
 
   useEffect(() => {

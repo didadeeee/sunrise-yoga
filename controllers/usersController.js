@@ -103,9 +103,33 @@ const create = async (req, res) => {
   }
 };
 
+const updateAccount = async (req, res) => {
+  const { name, email, birthday, password } = req.body;
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: "Authorization header is missing" });
+  }
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const users_id = decodedToken.user.id;
+  try {
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+    const { rows } = await pool.query(
+      `UPDATE users
+      SET name = '${name}', email = '${email}', birthday = '${birthday}', password = '${hashedPassword}'
+      WHERE id = '${users_id}'
+      RETURNING *;`
+    );
+    const newUser = rows[0];
+    console.log("newUser", newUser);
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 const showBookmarkYogas = async (req, res) => {
   if (!req.headers.authorization) {
-    return res.status(401).json({ message: 'Authorization header is missing' });
+    return res.status(401).json({ message: "Authorization header is missing" });
   }
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
@@ -129,36 +153,64 @@ const showBookmarkYogas = async (req, res) => {
   });
 };
 
-// const isAuth = async (req, res, next) => {
-//   const token = req.headers.authorization.replace(/"/g, "").split(" ")[1];
-//   console.log("token in authcontroller", token);
+const account = async (req, res) => {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: "Authorization header is missing" });
+  }
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const users_id = decodedToken.user.id;
+  pool.connect((err, client, done) => {
+    if (err) {
+      console.error("Error acquiring client", err.stack);
+      return res.status(500).json({ message: "Error acquiring client" });
+    }
+    client.query(
+      `SELECT * FROM users WHERE id = '${users_id}';`,
+      (err, result) => {
+        if (err) {
+          console.error("Error executing query", err.stack);
+          return res.status(500).json({ message: "Error executing query" });
+        }
+        res.json(result.rows[0]);
+        client.release();
+      }
+    );
+  });
+};
 
-//   if (token) {
-//     try {
-//       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-//       const { rows } = await pool.query(
-//         "SELECT * FROM customers WHERE email = $1",
-//         [decoded.customer.email]
-//       );
-
-//       if (rows.length > 0) {
-//         req.customer = decoded.customer;
-//         next();
-//       } else {
-//         res.status(403).send("Forbidden");
-//       }
-//     } catch (error) {
-//       res.status(401).send("Invalid token");
-//     }
-//   } else {
-//     res.status(401).send("Unauthorized");
-//   }
-// };
+const checkBookmark = async (req, res) => {
+  if (!req.headers.authorization) {
+    return res.status(401).json({ message: "Authorization header is missing" });
+  }
+  const token = req.headers.authorization.split(" ")[1];
+  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  const users_id = decodedToken.user.id;
+  pool.connect((err, client, done) => {
+    if (err) {
+      console.error("Error acquiring client", err.stack);
+      return res.status(500).json({ message: "Error acquiring client" });
+    }
+    client.query(
+      `SELECT * FROM usersyoga WHERE users_id = '${users_id}';`,
+      (err, result) => {
+        if (err) {
+          console.error("Error executing query", err.stack);
+          return res.status(500).json({ message: "Error executing query" });
+        }
+        res.json(result.rows);
+        client.release();
+      }
+    );
+  });
+};
 
 module.exports = {
   create,
   login,
+  account,
   setBirthday,
   showBookmarkYogas,
+  checkBookmark,
+  updateAccount,
 };

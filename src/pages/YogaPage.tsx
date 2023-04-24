@@ -16,6 +16,7 @@ import "./YogaPage.css";
 
 export default function YogaPage() {
   const [yoga, setYoga] = useState<Yoga | null>(null);
+  const [userYoga, setUserYoga] = useState([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -23,15 +24,8 @@ export default function YogaPage() {
   useEffect(() => {
     const fetchYoga = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          throw new Error("No token found");
-        }
         const response = await fetch(`/api/yogas/${id}`);
         const yoga = await response.json();
-        // if (yoga.usersyoga_yoga_id && yoga.usersyoga_yoga_id.length > 0) {
-        //   setIsBookmarked(true);
-        // }
         setYoga(yoga);
       } catch (error) {
         console.error(error);
@@ -39,6 +33,27 @@ export default function YogaPage() {
     };
     fetchYoga();
   }, [id]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("/api/users/checkbookmark", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userYoga = await response.json();
+        // const isBookmarked = userYoga.some((item) => item.yoga_id === id);
+        setUserYoga(userYoga);
+        setIsBookmarked(isBookmarked);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchUser();
+  }, [id, setIsBookmarked]);
 
   const handleBookmark = async () => {
     try {

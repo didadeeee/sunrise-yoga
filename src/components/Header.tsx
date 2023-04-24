@@ -1,13 +1,15 @@
 import AppBar from "@mui/material/AppBar";
 import HomeIcon from "@mui/icons-material/Home";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LogoutIcon from "@mui/icons-material/Logout";
-import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
-import { logout } from "../utilities/users-service";
+import IconButton from "@mui/material/IconButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import { useState } from "react";
+import "./Header.css";
 
 interface HeaderProps {
   user: User;
@@ -21,40 +23,94 @@ interface User {
   birthday: Date;
 }
 
-
 export default function Header({ user, setUser }: HeaderProps) {
-  
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleLogout = async () => {
     localStorage.removeItem("token");
     setUser(null);
+    setAnchorEl(null);
     console.log("user has been logged out successfully.");
   };
 
   return (
     <>
-      <AppBar position="relative">
-        <Toolbar>
-          <Link to="/">
-            <HomeIcon color="inherit" sx={{ mr: 2 }} />
-          </Link>
-          <Typography variant="h6" color="inherit" noWrap>
-            Sunrise Yoga
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: "flex", alignItems: "center", pr: 1 }}>
-          <a href="/users/bookmarks" style={{ marginRight: "16px" }}>
-              <TurnedInNotIcon />
-            </a>
-            <a href="/users/signup" style={{ marginRight: "16px" }}>
-              <AccountCircleIcon />
-            </a>
-            <LogoutIcon
-              onClick={handleLogout}
-              style={{ marginBottom: "4px" }}
-            />
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Link to="/">
+              <HomeIcon color="inherit" sx={{ mr: 2 }} />
+            </Link>
+            <Typography variant="h6" color="inherit" noWrap>
+              Sunrise Yoga
+            </Typography>
+            <Box sx={{ ml: "auto" }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose} className="menuLink">
+                  <Link to="/users/signup" style={{ textDecoration: "none", color: "inherit"  }}>
+                    Sign Up
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link to="/users/login" style={{ textDecoration: "none", color: "inherit" }}>
+                    Login
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose} className="menuLink">
+                  <Link to="/users/account" style={{ textDecoration: "none", color: "inherit"  }}>
+                    My Account
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    to="/users/bookmarks"
+                    style={{ textDecoration: "none", color: "inherit"  }}
+                  >
+                    Favourite Tutorials
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <Link to="" style={{ textDecoration: "none", color: "inherit"  }}>
+                    Log Out
+                  </Link>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </AppBar>
+      </Box>
     </>
   );
 }

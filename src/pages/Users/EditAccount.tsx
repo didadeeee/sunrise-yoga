@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import { getUser, signUp } from "../../utilities/users-service";
 import { useFormik } from "formik";
@@ -8,16 +9,19 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { State } from "../../Type";
-import "./SignUp.css";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { User } from "../../Type";
+import "./EditAccount.css";
 
-export default function SignUp() {
+export default function EditAccount() {
   const [loading, setLoading] = useState(false);
-  const [state, setState] = useState<State>({
+  const [userData, setUserData] = useState<User>({
     name: "",
     email: "",
     password: "",
-    birthday: "",
+    birthday: new Date(),
+    created_at: new Date(),
+    updated_at: new Date(),
   });
 
   const navigate = useNavigate();
@@ -60,44 +64,50 @@ export default function SignUp() {
     },
   });
 
-  const handleBirthday = async () => {
-    const response = await fetch("/api/users/setbirthday", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        state: {
-          ...state,
-          name: formik.values.name,
-          email: formik.values.email,
-          birthday: formik.values.birthday,
-        },
-      }),
-    });
-    const data = await response.json();
-    console.log("data", data);
-    return;
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("No token found");
+        }
+        const response = await fetch("/api/users/account", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userData = await response.json();
+        setUserData(userData);
+        formik.setValues({
+          name: userData.name,
+          email: userData.email,
+          birthday: userData.birthday,
+          password: userData.password,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserData();
+  }, []);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      window.alert(
-        state.email + " Account has been created successfully. Please Login."
-      );
-      fetch("/api/users/signup", {
-        method: "POST",
+      const token = localStorage.getItem("token");
+      window.alert("Dear " + userData.name + ", account has been updated successfully.");
+      fetch("/api/users/edit", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formik.values),
       })
         .then((response) => response.json())
         .then((data) => console.log("data", data));
-      handleBirthday();
-      console.log("submitted");
-      navigate("/users/login");
+      console.log("updated");
+      navigate("/users/account");
     } catch (err) {
       console.log(err);
     }
@@ -105,16 +115,16 @@ export default function SignUp() {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("handlechange");
-    setState({
-      ...state,
+    setUserData({
+      ...userData,
       [event.target.name]: event.target.value,
     });
   };
 
   return (
     <Box className="SignUpFormContainer">
-      <form autoComplete="off" onSubmit={handleSubmit} className="SignUpForm">
-        <Typography variant="h5">Sign Up a new Account </Typography>
+      <form autoComplete="off" onSubmit={handleUpdate} className="SignUpForm">
+        <Typography variant="h5">Update Account Details</Typography>
         <Box className="R1">
           <TextField
             id="outlined-basic"
@@ -190,18 +200,9 @@ export default function SignUp() {
 
         <Box className="R1">
           <Button variant="contained" type="submit">
-            Sign Up
+            Update
           </Button>
-          <p className="error-message">&nbsp;{state.error}</p>
-        </Box>
-
-        <Box className="R1">
-          <Typography variant="subtitle1">
-            Already have an account?
-            <Link to={`/users/login`}>
-              <Button>Login</Button>
-            </Link>
-          </Typography>
+          <p className="error-message">&nbsp;{userData.error}</p>
         </Box>
       </form>
     </Box>

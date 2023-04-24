@@ -4,7 +4,10 @@ export type User = {
     email: string;
     password: string;
     birthday: Date;
-    yoga_id: number;
+    yoga_id?: number;
+    created_at?: Date;
+    updated_at?: Date;
+    error?: string;
   }
   
   export type Yoga = {
