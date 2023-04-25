@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "commonjs",
   "scripts": {
-    "start": "node --watch server.js",
+    "start": "node server.js",
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
