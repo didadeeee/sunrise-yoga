@@ -60,8 +60,8 @@ export default function SignUp() {
     },
   });
 
-  const handleBirthday = async () => {
-    const response = await fetch("/api/users/setbirthday", {
+  const signUpEmail = async () => {
+    const response = await fetch("/api/users/signupemail", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export default function SignUp() {
       })
         .then((response) => response.json())
         .then((data) => console.log("data", data));
-      handleBirthday();
+      signUpEmail();
       console.log("submitted");
       navigate("/users/login");
     } catch (err) {

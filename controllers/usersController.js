@@ -3,14 +3,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const mailgen = require("mailgen");
-const cron = require("node-cron");
+// const cron = require("node-cron");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const SALT_ROUNDS = 10;
 
-const setBirthday = async (req, res) => {
+const signUpEmail = async (req, res) => {
   const { state } = req.body;
-
   const transporter = nodemailer.createTransport({
     service: "outlook",
     auth: {
@@ -23,14 +22,15 @@ const setBirthday = async (req, res) => {
     theme: "default",
     product: {
       name: "Sunrise Yoga",
-      link: "https://mailgen.js",
+      link: "https://sunrise-yoga.onrender.com/",
     },
   });
 
   const response = {
     body: {
       name: `${state.name}`,
-      intro: `Happy Birthday to you! ${state.name}`,
+      intro:
+        "Welcome! Here's a special gift for you: DISCOUNT15 for storewide 15% off. While stock lasts!",
     },
   };
 
@@ -39,29 +39,17 @@ const setBirthday = async (req, res) => {
   const message = {
     from: process.env.EMAIL,
     to: `${state.email}`,
-    subject: "Happy Birthday",
+    subject: "Welcome to the Sunrise Yoga Family!",
     html: mail,
   };
   try {
     await transporter.sendMail(message);
-    res.status(200).json({ message: "Birthday email sent successfully" });
+    console.log("Sign Up Email Successfully Sent");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error sending birthday email" });
+    console.log("Error Sending Email");
   }
 };
-
-cron.schedule("5 4 * * *", async () => {
-  try {
-    const today = new Date();
-    const userBirthday = await User.find({ birthday: today }).exec();
-    return userBirthday.some(
-      (user) => user.birthday.getTime() === today.getTime()
-    );
-  } catch (error) {
-    console.error(error);
-  }
-});
 
 const login = async (req, res) => {
   try {
@@ -202,7 +190,7 @@ module.exports = {
   create,
   login,
   account,
-  setBirthday,
+  signUpEmail,
   showBookmarkYogas,
   checkBookmark,
   updateAccount,

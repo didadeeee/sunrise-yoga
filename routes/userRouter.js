@@ -8,7 +8,7 @@ router.post("/login", userController.login);
 router.get("/account", userController.account);
 router.put("/edit", userController.updateAccount);
 router.get("/checkbookmark", userController.checkBookmark);
-router.post("/setbirthday", userController.setBirthday);
+router.post("/signupemail", userController.signUpEmail);
 router.get("/bookmarks", userController.showBookmarkYogas);
 
 module.exports = router;

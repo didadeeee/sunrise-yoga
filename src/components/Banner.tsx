@@ -38,7 +38,7 @@ export default function Homepage() {
           >
             What do you feel like today?
           </Typography> */}
-          <Stack
+          {/* <Stack
             sx={{ pt: 4 }}
             direction="row"
             spacing={2}
@@ -46,7 +46,7 @@ export default function Homepage() {
           >
             <Button variant="outlined">Yoga</Button>
             <Button variant="outlined">Make an Appointment</Button>
-          </Stack>
+          </Stack> */}
         </Container>
       </Box>
     </main>
