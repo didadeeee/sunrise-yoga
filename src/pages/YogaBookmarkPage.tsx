@@ -42,7 +42,10 @@ export default function YogaBookmarksPage() {
         <Grid container spacing={4}>
           {yogas.map((yoga) => (
             <Grid item key={yoga.id} xs={12} sm={6} md={4}>
-              <Link to={`/yogas/${yoga.id}`} style={{ textDecoration: "none" }}>
+              <Link
+                to={`/yogas/${yoga.yoga_id}`}
+                style={{ textDecoration: "none" }}
+              >
                 <Card
                   sx={{
                     height: "100%",
@@ -50,8 +53,6 @@ export default function YogaBookmarksPage() {
                     flexDirection: "column",
                   }}
                 >
-                  <BookmarkIcon></BookmarkIcon>
-
                   <CardMedia
                     component="img"
                     sx={{

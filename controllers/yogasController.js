@@ -99,6 +99,7 @@ module.exports = {
   showYogas,
   showSelectedYogas,
   filteredYogas,
+  // checkBookmark,
   bookmarkYogas,
   unbookmarkYogas,
 };

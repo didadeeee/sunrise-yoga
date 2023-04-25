@@ -14,11 +14,16 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import "./YogaPage.css";
 
+interface UserYoga {
+  yoga_id: number;
+  users_id: number;
+}
+
 export default function YogaPage() {
   const [yoga, setYoga] = useState<Yoga | null>(null);
   const [userYoga, setUserYoga] = useState([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,28 +38,34 @@ export default function YogaPage() {
     };
     fetchYoga();
   }, [id]);
-  
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const response = await fetch("/api/users/checkbookmark", {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       const userYoga = await response.json();
-  //       // const isBookmarked = userYoga.some((item) => item.yoga_id === id);
-  //       setUserYoga(userYoga);
-  //       setIsBookmarked(isBookmarked);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  useEffect(() => {
+    console.log("id", id);
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("/api/users/checkbookmark", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const userYoga = await response.json();
+        console.log("userYoga", userYoga);
+        if (userYoga.length === 0) {
+          setIsBookmarked(false);
+        }
+        const isBookmarked = userYoga.some(
+          (item: UserYoga) => item.yoga_id === Number(id)
+        );
+        setUserYoga(userYoga);
+        setIsBookmarked(isBookmarked);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-  //   fetchUser();
-  // }, [id, setIsBookmarked]);
+    fetchUser();
+  }, [id, setIsBookmarked]);
 
   const handleBookmark = async () => {
     try {
@@ -74,6 +85,7 @@ export default function YogaPage() {
         }),
       });
       const data = await response.json();
+      console.log("bookmark", isBookmarked);
       setIsBookmarked(true);
       return data;
     } catch (error) {

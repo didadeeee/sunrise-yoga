@@ -1,4 +1,4 @@
-import PageNotFound from "../../public/404notfound.jpg";
+import PageNotFound from "../404notfound.jpg";
 
 function PageNotExist() {
   return (

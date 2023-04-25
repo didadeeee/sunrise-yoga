@@ -126,33 +126,6 @@ const updateAccount = async (req, res) => {
   }
 };
 
-// const updateAccount = async (req, res) => {
-//   const { name, email, birthday, password } = req.body;
-//   if (!req.headers.authorization) {
-//     return res.status(401).json({ message: "Authorization header is missing" });
-//   }
-//   const token = req.headers.authorization.split(" ")[1];
-//   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-//   const users_id = decodedToken.user.id;
-//   try {
-//     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-//     const { rows } = await pool.query(
-//       `UPDATE users
-//       SET name = '${name}', email = '${email}', birthday = '${birthday}', password = '${hashedPassword}'
-//       WHERE id = '${users_id}'
-//       RETURNING *;`
-//     );
-//     const newUser = rows[0];
-//     console.log("newUser", newUser);
-//     res.status(201).json(newUser);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
-
-
-
-
 const showBookmarkYogas = async (req, res) => {
   if (!req.headers.authorization) {
     return res.status(401).json({ message: "Authorization header is missing" });
@@ -212,23 +185,17 @@ const checkBookmark = async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
   const users_id = decodedToken.user.id;
-  pool.connect((err, client, done) => {
-    if (err) {
-      console.error("Error acquiring client", err.stack);
-      return res.status(500).json({ message: "Error acquiring client" });
-    }
-    client.query(
-      `SELECT * FROM usersyoga WHERE users_id = '${users_id}';`,
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query", err.stack);
-          return res.status(500).json({ message: "Error executing query" });
-        }
-        res.json(result.rows);
-        client.release();
-      }
+  try {
+    const client = await pool.connect();
+    const result = await client.query(
+      `SELECT * FROM usersyoga WHERE users_id = '${users_id}';`
     );
-  });
+    res.json(result.rows);
+    client.release();
+  } catch (err) {
+    console.error("Error executing query", err.stack);
+    res.status(500).json({ message: "Error executing query" });
+  }
 };
 
 module.exports = {
