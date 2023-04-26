@@ -1,6 +1,8 @@
 DROP TABLE instructor;
 DROP TABLE yoga;
 DROP TABLE users;
+DROP TABLE usersyoga;
+DROP TABLE instructoryoga;
 
 CREATE TABLE yoga (
   id SERIAL PRIMARY KEY UNIQUE,
@@ -18,7 +20,7 @@ CREATE TABLE instructor (
   id SERIAL PRIMARY KEY UNIQUE,
   name VARCHAR NOT NULL,
   handle VARCHAR NOT NULL,
-  avatar VARCHAR,
+  channel VARCHAR,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -56,31 +58,38 @@ INSERT INTO yoga (title, intensity, duration, thumbnailimageurl, videoembeddedur
 VALUES ('Full Body Yoga for Strength & Flexibility', 'Advanced', '25', 'https://i.ytimg.com/vi/Eml2xnoLpYE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBTnUFk0gXqMGAgvecmjVLFeFzjRA', 'https://www.youtube.com/watch?v=Eml2xnoLpYE&ab_channel=growingannanas', 'Powerful Yoga Workout for Strength & Flexibility. Join us for a 25 Minute Flow. Open the hips, the shoulders, and tap into your core strength.');
 
 INSERT INTO yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
-VALUES ('Full Body Gentle Yoga Practice for Beginners and Athletes', 'Beginner', '22', 'https://i.ytimg.com/vi/B4kNiCWTl7M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB-jWaxSXvvaGPXuOx4j8-AKfSBUQ', 'https://www.youtube.com/watch?v=B4kNiCWTl7M&ab_channel=BreatheandFlow', 'This is a 22 minute full body gentle yoga practice for beginners. Ideal for athletes and easy days to recover, stretch and strengthen.');
+VALUES ('Yin Yoga, Full Body Stretch and Opening', 'Advanced', '50', 'https://i.ytimg.com/vi/SAQHs10bJUw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCny4LFlSECvA94VEoYJpW-EEHt9A', 'https://www.youtube.com/watch?v=SAQHs10bJUw&ab_channel=melinaophelia', 'Welcome to this full body yin yoga practice! Dive deep into the opening of your body, let all the muscles go and fully relax! Please note: there is no right or wrong for these asana, they will look different in your body and that is perfectly fine. Just focus on your breath and tune into yourself here. enjoy. :)');
 
 INSERT INTO yoga (title, intensity, duration, thumbnailimageurl, videoembeddedurl, description)
-VALUES ('Yoga For Your Core', 'Beginner', '27', 'https://i.ytimg.com/vi/_Mx24iENIEY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCAEm5jPV576nq0VsUCJMlEwg1QyA', 'https://www.youtube.com/watch?v=_Mx24iENIEY&t=1414s&ab_channel=YogaWithAdriene', 'Who says you cannot have it all? It is all about balance. This session takes you on a journey from deep core activation, through strength and conditioning, on to exquisite rest. All designed to foster a balanced and happy equilibrium for the day.');
+VALUES ('Anti Stiff Body Yoga, Dynamic & Deep Stretching', 'Beginner', '10', 'https://i.ytimg.com/vi/XYgtwAT5h_M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCmw-J-qYXqyUcatPdHY5iEt9d-yg', 'https://www.youtube.com/watch?v=XYgtwAT5h_M&ab_channel=PamelaReif', 'For strong joints, flexibility & fuller range of movements ♥︎ Let us enjoy the freeeeedom of moving our body smoothly until we get old!');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Adrienne', 'Yoga with Adrienne', 'https://yt3.googleusercontent.com/ytc/AGIKgqMjL_sxyKbuze9liPIXaM5EYxXGxa69J3bE79aP2Q=s176-c-k-c0x00ffffff-no-rj');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Nicole', 'Yoga by Nicole', 'https://yt3.googleusercontent.com/AyujjrnTpLDbINUeVwhy8oGiYCZUlaXU9QG8ku0fp6eIC-_tiuLuf3IMXb-Y6NP93-zZBpNk=s176-c-k-c0x00ffffff-no-rj');
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Adrienne', 'Yoga with Adrienne', 'https://www.youtube.com/@yogawithadriene');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Maddie', 'MadFit', 'https://yt3.googleusercontent.com/sK43gp6tWrF6peB46z2zi5IdOfgWuMzUJzVdpjB1IzlcmS7t6_sviJjj0UmsnJrxri0SO3DaW4k=s176-c-k-c0x00ffffff-no-rj');
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Nicole', 'Yoga by Nicole', 'https://www.youtube.com/@YogabyNicole');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Bird', 'Yoga with Bird', 'https://yt3.googleusercontent.com/gytX6pfqzMfjIAor2thgHmBi2KqlvB2SkxmLzyXRyBYRE5J686R_iKMfcAG__tE1yD3VA4GW5_I=s176-c-k-c0x00ffffff-no-rj');
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Maddie', 'MadFit', 'https://www.youtube.com/@MadFit');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Flo', 'Breathe and Flow', 'https://yt3.googleusercontent.com/ncpSh1RoLkfwE_NqpeY5Cxs-y-CfoQLYWY9TYT6vWGcyDAlc_ix3T570avJm1-N5YM2YCyRbkA=s176-c-k-c0x00ffffff-no-rj');
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Bird', 'Yoga with Bird', 'https://www.youtube.com/@YogaWithBird');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Jessica', 'Jessica Richburg', 'https://yt3.googleusercontent.com/ytc/AGIKgqM7z7LW_ML1WtIje3vViiJOlJ7OXMSgfQW6i4kZHvY=s176-c-k-c0x00ffffff-no-rj');
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Flo', 'Breathe and Flow', 'https://www.youtube.com/@BreatheAndFlow');
 
-INSERT INTO instructor (name, handle, avatar)
-VALUES ('Anna', 'growingannanas', 'https://yt3.googleusercontent.com/ytc/AGIKgqMexaV0Firm0zPaAtGK7FmFOypb3OTgCfm4ef53sg=s176-c-k-c0x00ffffff-no-rj');
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Jessica', 'Jessica Richburg', 'https://www.youtube.com/@JessicaRichburg');
+
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Anna', 'growingannanas', 'https://www.youtube.com/@growingannanas');
+
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Melina Ophelia', 'melinaophelia2287', 'https://www.youtube.com/@melinaophelia2287');
+
+INSERT INTO instructor (name, handle, channel)
+VALUES ('Pamela Reif', 'PamelaRf1', 'https://www.youtube.com/@PamelaRf1');
 
 CREATE TABLE instructoryoga (
   id SERIAL PRIMARY KEY,
@@ -112,10 +121,10 @@ INSERT INTO instructoryoga (instructor_id, yoga_id)
 VALUES (7,7);
 
 INSERT INTO instructoryoga (instructor_id, yoga_id)
-VALUES (5,8);
+VALUES (8,8);
 
 INSERT INTO instructoryoga (instructor_id, yoga_id)
-VALUES (1,9);
+VALUES (9,9);
 
 -- after users table is created
 CREATE TABLE usersyoga (

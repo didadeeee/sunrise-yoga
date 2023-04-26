@@ -6,8 +6,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Unstable_Grid2";
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -41,9 +40,13 @@ export default function YogaPage() {
 
   useEffect(() => {
     console.log("id", id);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await fetch("/api/users/checkbookmark", {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,67 +124,70 @@ export default function YogaPage() {
   };
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="sm">
       {yoga && (
-        <>
-          <Box
-            sx={{ bgcolor: "#FAF6F4", height: "100vh", mt: 4 }}
-            className="YogaPage"
-          >
-            <Typography variant="h5" sx={{ m: 1 }}>
-              {yoga.title} by {yoga.name}
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid xs={12}>
-                <Container
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <ReactPlayer
-                    url={yoga.videoembeddedurl}
-                    controls
-                    width="80%"
-                    aspectRatio="16:9"
-                  />
-                </Container>
-                <Grid
-                  container
-                  alignItems="center"
-                  spacing={2}
-                  sx={{ m: 2, ml: 25 }}
-                >
-                  <Stack direction="row" spacing={2}>
-                    <Avatar
-                      alt={yoga.title}
-                      src={yoga.avatar}
-                      sx={{ width: 100, height: 120, borderRadius: "50%" }}
-                    />
-                  </Stack>
-                  <SubscriptionsIcon sx={{ fontSize: "3rem", ml: 2 }} />
-                  <Typography variant="h4" component="h2">
-                    {yoga.handle}
-                  </Typography>
-                  <Box className="YogaPageButton" sx={{ ml: 13 }}>
-                    <Button variant="outlined">
-                      {isBookmarked ? (
-                        <BookmarkIcon onClick={handleUnbookmark} />
-                      ) : (
-                        <BookmarkBorderIcon onClick={handleBookmark} />
-                      )}
-                    </Button>
-                  </Box>
-                </Grid>
-                <Typography variant="body1" color="text.primary" sx={{ m: 2 }}>
-                  {yoga.description}
+        <Box
+          sx={{ bgcolor: "#FAF6F4", minHeight: "80vh", m: 2, mt: 3 }}
+          className="YogaPage"
+        >
+          <Typography variant="h6" sx={{ m: 1 }}>
+            {yoga.title} by {yoga.name}
+          </Typography>
+          <Stack spacing={2}>
+            <Container style={{ paddingTop: "56.25%", position: "relative" }}>
+              <ReactPlayer
+                url={yoga.videoembeddedurl}
+                controls
+                width="100%"
+                height="100%"
+                style={{ position: "absolute", top: 0, left: 0 }}
+              />
+            </Container>
+            <Container sx={{ maxWidth: "xl", padding: 2 }}>
+              <Stack
+                direction={{ xs: "column", md: "row" }}
+                alignItems="center"
+                spacing={{ xs: 1, md: 2 }}
+                sx={{ p: { xs: 1, md: 2 } }}
+              >
+                {/* <Avatar
+                  alt={yoga.title}
+                  src={yoga.avatar}
+                  sx={{
+                    width: { xs: 60, md: 80 },
+                    height: { xs: 72, md: 96 },
+                    borderRadius: "50%",
+                  }}
+                /> */}
+                <SubscriptionsIcon
+                  sx={{ fontSize: { xs: "2rem", md: "2.5rem" } }}
+                />
+                <Typography variant="h6" component="h2" sx={{ flex: 1 }}>
+                 <Link to={yoga.channel}> {yoga.handle}</Link>
                 </Typography>
-                <Typography variant="h6" color="text.primary" sx={{ m: 2 }}>
-                  Duration:{yoga.duration} Minutes
-                </Typography>
-              </Grid>
-            </Grid>
-          </Box>
-        </>
-      )}{" "}
-      <br></br>
+                <Button variant="outlined">
+                  {isBookmarked ? (
+                    <BookmarkIcon onClick={handleUnbookmark} />
+                  ) : (
+                    <BookmarkBorderIcon onClick={handleBookmark} />
+                  )}
+                </Button>
+              </Stack>
+
+              <Typography
+                variant="body1"
+                color="text.primary"
+                sx={{ m: 2, mb: 1 }}
+              >
+                {yoga.description}
+              </Typography>
+              <Typography variant="h6" color="text.primary" sx={{ m: 2 }}>
+                Duration: {yoga.duration} Minutes
+              </Typography>
+            </Container>
+          </Stack>
+        </Box>
+      )}
     </Container>
   );
 }

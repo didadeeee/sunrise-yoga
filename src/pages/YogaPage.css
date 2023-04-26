@@ -27,7 +27,7 @@
   }
   
   @media screen and (max-width: 600px) {
-    .ExhibitionPage img {
+    .YogaPage img {
       max-height: 300px;
       width: 90%;
     }

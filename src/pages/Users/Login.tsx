@@ -77,55 +77,57 @@ export default function Login({ setUser }: SignUpProps) {
   };
 
   return (
-    <Box className="LoginFormContainer">
-      <form onSubmit={handleLogin} className="LoginForm">
-        <br></br>
-        <Typography variant="h5">User Login </Typography>
-        <Box className="R2">
-          <TextField
-            type="email"
-            label="Enter your email address"
-            name="email"
-            value={formik.values.email}
-            helperText={formik.errors.email ? formik.errors.email : ""}
-            onChange={formik.handleChange}
-            className="my-textfield"
-            InputLabelProps={{
-              style: { color: "#000000" },
-            }}
-            required
-          />
-        </Box>
+    <>
+      <Box className="LoginFormContainer">
+        <form onSubmit={handleLogin} className="LoginForm">
+          <br></br>
+          <Typography variant="h5">User Login </Typography>
+          <Box className="R2">
+            <TextField
+              type="email"
+              label="Enter your email address"
+              name="email"
+              value={formik.values.email}
+              helperText={formik.errors.email ? formik.errors.email : ""}
+              onChange={formik.handleChange}
+              className="my-textfield"
+              InputLabelProps={{
+                style: { color: "#000000" },
+              }}
+              required
+            />
+          </Box>
 
-        <Box className="R2">
-          <TextField
-            label="Enter your password"
-            name="password"
-            value={formik.values.password}
-            helperText={formik.errors.password ? formik.errors.password : ""}
-            onChange={formik.handleChange}
-            className="my-textfield"
-            type="password"
-            InputLabelProps={{
-              style: { color: "#000000" },
-            }}
-            required
-          />
-        </Box>
+          <Box className="R2">
+            <TextField
+              label="Enter your password"
+              name="password"
+              value={formik.values.password}
+              helperText={formik.errors.password ? formik.errors.password : ""}
+              onChange={formik.handleChange}
+              className="my-textfield"
+              type="password"
+              InputLabelProps={{
+                style: { color: "#000000", width: "100%" },
+              }}
+              required
+            />
+          </Box>
 
-        <Box className="R2">
-          <Button variant="contained" type="submit">
-            Login
-          </Button>
-        </Box>
+          <Box className="R2" style={{ marginBottom: "1px" }}>
+            <Button variant="contained" type="submit">
+              Login
+            </Button>
+          </Box>
+        </form>
+      </Box>
 
-        <Box className="R2">
-          <Typography variant="subtitle1">No account yet? </Typography>
-          <Link to={`/users/signup`}>
-            <Button>Sign Up</Button>
-          </Link>
-        </Box>
-      </form>
-    </Box>
+      <Box className="R2" style={{ marginTop: "1px" }}>
+        <Typography variant="subtitle1">No account yet? </Typography>
+        <Link to={`/users/signup`}>
+          <Button>Sign Up</Button>
+        </Link>
+      </Box>
+    </>
   );
 }

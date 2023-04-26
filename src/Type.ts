@@ -36,7 +36,7 @@ export type EditUser = {
     handle: string;
     yoga_id: number;
     page: number;
-    avatar: string;
+    channel: string;
   };
 
   export type SignUpProps = {

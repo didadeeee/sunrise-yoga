@@ -80,13 +80,17 @@ export default function SearchBar({ yogas }: YogaCardProps) {
 
   return (
     <>
-      <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 2 }}>
+      <Box sx={{ bgcolor: "background.paper", p: 0.2, mt: 1 }}>
         <FormControl
           sx={{
-            m: 2,
+            m: 1,
             minWidth: 100,
-            display: "inline",
-            "& > *": { mr: 2, mb: 2 },
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            "& > *": { mx: 1, my: 2 },
           }}
         >
           <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
@@ -161,7 +165,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
         </FormControl>
       </Box>
       <FilteredYogas yogas={yogas} filteredYogas={filteredYogas} />
-      <Box sx={{ display: "flex", justifyContent: "center", mb: 5 }}>
+      {/* <Box sx={{ display: "flex", justifyContent: "center", mb: 5 }}>
         <Stack spacing={2}>
           <Pagination
             count={5}
@@ -171,7 +175,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
             // onChange={handlePage}
           />
         </Stack>
-      </Box>
+      </Box> */}
     </>
   );
 }

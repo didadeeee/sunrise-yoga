@@ -131,8 +131,8 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
   };
 
   return (
-    <Box className="SignUpFormContainer">
-      <form autoComplete="off" onSubmit={handleUpdate} className="SignUpForm">
+    <Box className="EditFormContainer">
+      <form autoComplete="off" onSubmit={handleUpdate} className="EditForm">
         <Typography variant="h5">Update Account Details</Typography>
         <Box className="R1">
           <TextField
@@ -188,11 +188,13 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
           />
         </Box> */}
 
-        <DatePicker
-          label="birthday"
-          value={dayjs(formik.values.birthday)}
-          onChange={handleBirthday}
-        />
+        <Box className="R1">
+          <DatePicker
+            label="birthday"
+            value={dayjs(formik.values.birthday)}
+            onChange={handleBirthday}
+          />
+        </Box>
 
         <Box className="R1">
           <Button variant="contained" type="submit">
