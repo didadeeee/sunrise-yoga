@@ -1,10 +1,6 @@
 ## **Sunrise Yoga**
 
-<br/>
-
 ### **App Description**
-
-<br/>
 
 #### **Getting Started** : https://sunrise-yoga.onrender.com/
 
@@ -15,12 +11,14 @@ Sunrise Yoga is an app that allow users to access yoga tutorials through search 
 
 ### **User Stories**
 
-As a visitor, I want to view all the yoga guide on the homepage.<br/>
-As a visitor, I want to view individual yoga tutorials.<br/>
-As a visitor, I want to search and filter the yoga tutorials according to my preferences.<br/>
-As a user, I want to receive welcome promotion through email.<br/>
-As a user, I want to bookmark my favorite yoga tutorials.<br/>
-As a user, I want to update my user details.<br/>
+- As a visitor, I want to view all the yoga guide on the homepage.
+- As a visitor, I want to view individual yoga tutorials.
+- As a visitor, I want to search and filter the yoga tutorials according to my preferences.
+- As a user, I want to update my user details.
+- As a user, I want to bookmark my favorite yoga tutorials.
+- As a user, I want to receive welcome promotion through email.
+
+
 
 ### **Model**<br/>
 
@@ -208,7 +206,7 @@ const formik = useFormik({
         </Box>
 ```
 
-- Filter yoga tutorials according to filters
+- Filter yoga tutorials according to preferences
 
 ```tsx
 export default function SearchBar({ yogas }: YogaCardProps) {
