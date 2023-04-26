@@ -1,34 +1,34 @@
 .YogaPage {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-area: 2 / 1 / 3 / 5;
-    overflow-y: auto;
-    flex-direction: column;
-    margin: 0 auto;
-    max-width: 1000px;
-    min-height: 365px;
-    padding: 20px 20px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: 2 / 1 / 3 / 5;
+  overflow-y: auto;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1000px;
+  min-height: 365px;
+  padding: 20px 20px;
+}
+
+.YogaPage img {
+  align-self: center;
+  display: block;
+  margin: 10px auto;
+  max-height: 500px;
+  width: 100%;
+  align-self: center;
+  padding-bottom: 30px;
+}
+
+.YogaPageButton {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
   .YogaPage img {
-    align-self: center;
-    display: block;
-    margin: 10px auto;
-    max-height: 500px;
-    width: 100%;
-    align-self: center;
-    padding-bottom: 30px;
+    max-height: 300px;
+    width: 90%;
   }
-  
-  .YogaPageButton {
-    display: flex;
-    justify-content: center;
-  }
-  
-  @media screen and (max-width: 600px) {
-    .YogaPage img {
-      max-height: 300px;
-      width: 90%;
-    }
-  }
+}

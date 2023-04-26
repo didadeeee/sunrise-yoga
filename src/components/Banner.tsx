@@ -1,5 +1,3 @@
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -7,7 +5,6 @@ import Container from "@mui/material/Container";
 export default function Homepage() {
   return (
     <main>
-      {/* Hero unit */}
       <Box
         sx={{
           bgcolor: "background.paper",

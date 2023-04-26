@@ -3,8 +3,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+// import Pagination from "@mui/material/Pagination";
+// import Stack from "@mui/material/Stack";
 import FilteredYogas from "./FilteredYogas";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -94,7 +94,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
           }}
         >
           <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+            <InputLabel id="demo-simple-select-autowidth-label">
               Duration
             </InputLabel>
             <Select
@@ -117,7 +117,7 @@ export default function SearchBar({ yogas }: YogaCardProps) {
           </FormControl>
 
           <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+            <InputLabel id="demo-simple-select-autowidth-label">
               Intensity
             </InputLabel>
             <Select
@@ -141,11 +141,11 @@ export default function SearchBar({ yogas }: YogaCardProps) {
           </FormControl>
 
           <FormControl sx={{ m: 2, minWidth: 100, display: "inline" }}>
-            <InputLabel shrink={true} id="demo-simple-select-autowidth-label">
+            <InputLabel id="demo-simple-select-autowidth-label">
               Instructor
             </InputLabel>
             <Select
-              sx={{ minWidth: "100px" }}
+              sx={{ minWidth: "120px" }}
               labelId="demo-simple-select-autowidth-label"
               id="demo-simple-select-autowidth"
               value={searchParams.get("name")}

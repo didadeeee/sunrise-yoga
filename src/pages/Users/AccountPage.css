@@ -1,29 +1,28 @@
 .R2-Account {
-    width: 100%;
-    max-width: 200px;
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-    margin: 5px auto 10px;
-  }
-  
-  .R2-Account:hover {
-    background-color: #e3e3e3;
-  }
+  width: 100%;
+  max-width: 200px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  margin: 5px auto 10px;
+}
 
-  
+.R2-Account:hover {
+  background-color: #e3e3e3;
+}
+
 .my-textfield .MuiFormHelperText-root {
-    color: #dc3545;
-    font-size: 12px;
-    min-height: 15px;
-    text-align: left;
-  }
+  color: #dc3545;
+  font-size: 12px;
+  min-height: 15px;
+  text-align: left;
+}
 
 /* start row, start Col, End Row, End col */

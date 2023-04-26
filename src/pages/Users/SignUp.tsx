@@ -1,18 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { getUser, signUp } from "../../utilities/users-service";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import { State } from "../../Type";
 import "./SignUp.css";
 
 export default function SignUp() {
-  const [loading, setLoading] = useState(false);
   const [state, setState] = useState<State>({
     name: "",
     email: "",
@@ -52,9 +49,7 @@ export default function SignUp() {
     validationSchema: validateSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-      setLoading(true);
       setTimeout(() => {
-        setLoading(false);
         resetForm();
       }, 1000 * 2);
     },

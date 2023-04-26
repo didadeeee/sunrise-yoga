@@ -3,30 +3,22 @@ import HomeIcon from "@mui/icons-material/Home";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
+
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
-interface HeaderProps {
-  user: User;
+type HeaderProps = {
   setUser: React.Dispatch<React.SetStateAction<any>>;
 }
 
-interface User {
-  name: string;
-  email: string;
-  password: string;
-  birthday: Date;
-}
-
-export default function UserHeader ({ user, setUser }: HeaderProps) {
+export default function UserHeader({ setUser }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
-  
+
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -41,7 +33,6 @@ export default function UserHeader ({ user, setUser }: HeaderProps) {
     setAnchorEl(null);
     navigate("/");
     console.log("user has been logged out successfully.");
-
   };
 
   return (
@@ -82,20 +73,26 @@ export default function UserHeader ({ user, setUser }: HeaderProps) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose} className="menuLink">
-                  <Link to="/users/account" style={{ textDecoration: "none", color: "inherit"  }}>
+                  <Link
+                    to="/users/account"
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                     My Account
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <Link
                     to="/users/bookmarks"
-                    style={{ textDecoration: "none", color: "inherit"  }}
+                    style={{ textDecoration: "none", color: "inherit" }}
                   >
                     Favourite Tutorials
                   </Link>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
-                  <Link to="" style={{ textDecoration: "none", color: "inherit"  }}>
+                  <Link
+                    to=""
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
                     Log Out
                   </Link>
                 </MenuItem>

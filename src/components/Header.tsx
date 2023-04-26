@@ -3,26 +3,14 @@ import HomeIcon from "@mui/icons-material/Home";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-interface HeaderProps {
-  user: User;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
-}
-
-interface User {
-  name: string;
-  email: string;
-  password: string;
-  birthday: Date;
-}
-
-export default function Header({ user, setUser }: HeaderProps) {
+export default function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {

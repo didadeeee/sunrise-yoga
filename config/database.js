@@ -14,6 +14,7 @@ const pool = new Pool({
 
 module.exports = pool;
 
+// test database connection
 // pool.query("SELECT * FROM yoga", (err, res) => {
 //   console.log(err, res.rows[0]);
 //   pool.end();

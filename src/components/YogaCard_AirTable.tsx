@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState, useEffect } from "react";
 import Airtable from "airtable";
-import type { Yoga } from "../../src/Type";
+import type { Yoga } from "../Type";
 
 type recordsProps = {
   id: string;

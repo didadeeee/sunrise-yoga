@@ -1,23 +1,22 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { EditUser, SignUpProps } from "../../Type";
+import * as Yup from "yup";
+import dayjs from "dayjs";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { User } from "../../Type";
 import "./EditAccount.css";
 
 type EditAccountProps = {
-  user: EditUser;
-  setUser: any;
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export default function EditAccount({ user, setUser }: EditAccountProps) {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateSchema = Yup.object().shape({
@@ -50,9 +49,7 @@ export default function EditAccount({ user, setUser }: EditAccountProps) {
     validationSchema: validateSchema,
     onSubmit: (values, { resetForm }) => {
       console.log(values);
-      setLoading(true);
       setTimeout(() => {
-        setLoading(false);
         resetForm();
       }, 1000 * 2);
     },

@@ -16,7 +16,7 @@ export const theme = createTheme({
     text: {
       secondary: "#FFDEA6",
       primary: "#5A6175",
-    //   hint: "#ff0000",
+      //   hint: "#ff0000",
     },
   },
   typography: {

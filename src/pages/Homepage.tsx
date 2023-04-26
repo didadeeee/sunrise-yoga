@@ -1,10 +1,10 @@
-import.meta.env.VITE_AIRTABLE_API_KEY;
+import axios from "axios";
+import { useState, useEffect } from "react";
 import Banner from "../components/Banner";
 import SearchBar from "../components/SearchBar";
-import { useState, useEffect } from "react";
-import type { Yoga } from "../../src/Type";
 import LoadingSpinner from "./LoadingSpinner";
-import axios from "axios";
+import type { Yoga } from "../../src/Type";
+
 
 export default function Homepage() {
   const [yogas, setYogas] = useState<Yoga[]>([]);

@@ -5,8 +5,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import type { Yoga } from "../../src/Type";
 import { Link } from "react-router-dom";
+import type { Yoga } from "../../src/Type";
 
 type YogaCardProps = {
   yogas: Yoga[];
@@ -30,7 +30,6 @@ export default function YogaCard({ yogas }: YogaCardProps) {
                   <CardMedia
                     component="img"
                     sx={{
-                      // 16:9
                       pt: "10%",
                     }}
                     image={yoga.thumbnailimageurl}

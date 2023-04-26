@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,20 +5,19 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Link } from "react-router-dom";
-import dayjs from "dayjs";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { User, SignUpProps } from "../../Type";
+import { Link } from "react-router-dom";
+import dayjs from "dayjs";
+import { User } from "../../Type";
 import "./AccountPage.css";
 
 type AccountPageProp = {
   user: User;
-  setUser: any;
 };
 
-export default function AccountPage({ user, setUser }: AccountPageProp) {
+export default function AccountPage({ user }: AccountPageProp) {
   return (
     <>
       <Box sx={{ maxWidth: "600px", margin: "0 auto" }}>

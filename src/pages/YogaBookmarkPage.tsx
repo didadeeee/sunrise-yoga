@@ -1,17 +1,16 @@
-import.meta.env.VITE_AIRTABLE_API_KEY;
+import axios from "axios";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import LoadingSpinner from "./LoadingSpinner";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import LoadingSpinner from "./LoadingSpinner";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import type { Yoga } from "../Type";
 import "./YogaBookmarksPage.css";
-import axios from "axios";
-import type { Yoga, User } from "../Type";
 
 export default function YogaBookmarksPage() {
   const [yogas, setYogas] = useState<Yoga[]>([]);

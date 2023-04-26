@@ -1,29 +1,27 @@
-import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import type { Yoga } from "../Type";
 import ReactPlayer from "react-player";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-// import Avatar from "@mui/material/Avatar";
 import Stack from "@mui/material/Stack";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import type { Yoga } from "../Type";
 import "./YogaPage.css";
 
-interface UserYoga {
+type UserYoga = {
   yoga_id: number;
   users_id: number;
-}
+};
 
 export default function YogaPage() {
   const [yoga, setYoga] = useState<Yoga | null>(null);
   const [userYoga, setUserYoga] = useState([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { id } = useParams<{ id?: string }>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchYoga = async () => {
@@ -44,7 +42,6 @@ export default function YogaPage() {
     if (!token) {
       return;
     }
-
     const fetchUser = async () => {
       try {
         const response = await fetch("/api/users/checkbookmark", {
@@ -66,7 +63,6 @@ export default function YogaPage() {
         console.error(error);
       }
     };
-
     fetchUser();
   }, [id, setIsBookmarked]);
 
@@ -150,20 +146,11 @@ export default function YogaPage() {
                 spacing={{ xs: 1, md: 2 }}
                 sx={{ p: { xs: 1, md: 2 } }}
               >
-                {/* <Avatar
-                  alt={yoga.title}
-                  src={yoga.avatar}
-                  sx={{
-                    width: { xs: 60, md: 80 },
-                    height: { xs: 72, md: 96 },
-                    borderRadius: "50%",
-                  }}
-                /> */}
                 <SubscriptionsIcon
                   sx={{ fontSize: { xs: "2rem", md: "2.5rem" } }}
                 />
                 <Typography variant="h6" component="h2" sx={{ flex: 1 }}>
-                 <Link to={yoga.channel}> {yoga.handle}</Link>
+                  <Link to={yoga.channel}> {yoga.handle}</Link>
                 </Typography>
                 <Button variant="outlined">
                   {isBookmarked ? (
