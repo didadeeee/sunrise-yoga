@@ -12,7 +12,8 @@ const create = async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const { rows } = await pool.query(
-      `INSERT INTO users(name, email, birthday, password) VALUES('${name}','${email}', '${birthday}', '${hashedPassword}') RETURNING *;`
+      `INSERT INTO users(name, email, birthday, password) VALUES($1,$2,$3,$4) RETURNING *;`,
+      [name, email, birthday, hashedPassword]
     );
     const newUser = rows[0];
     console.log("newUser", newUser);
@@ -127,9 +128,10 @@ const updateAccount = async (req, res) => {
   try {
     const { rows } = await pool.query(
       `UPDATE users
-      SET name = '${name}', email = '${email}', birthday = '${birthday}'
-      WHERE id = '${users_id}'
-      RETURNING *;`
+      SET name = $1, email = $2, birthday = $3
+      WHERE id = $4
+      RETURNING *;`,
+      [name, email, birthday, users_id]
     );
     const newUser = rows[0];
     console.log("newUser", newUser);
@@ -149,7 +151,8 @@ const checkBookmark = async (req, res) => {
   try {
     const client = await pool.connect();
     const result = await client.query(
-      `SELECT * FROM usersyoga WHERE users_id = '${users_id}';`
+      `SELECT * FROM usersyoga WHERE users_id = $1;`,
+      [users_id]
     );
     res.json(result.rows);
     client.release();
@@ -157,32 +160,6 @@ const checkBookmark = async (req, res) => {
     console.error("Error executing query", err.stack);
     res.status(500).json({ message: "Error executing query" });
   }
-};
-
-const showBookmarkYogas = async (req, res) => {
-  if (!req.headers.authorization) {
-    return res.status(401).json({ message: "Authorization header is missing" });
-  }
-  const token = req.headers.authorization.split(" ")[1];
-  const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-  const users_id = decodedToken.user.id;
-  pool.connect((err, client, done) => {
-    if (err) {
-      console.error("Error acquiring client", err.stack);
-      return res.status(500).json({ message: "Error acquiring client" });
-    }
-    client.query(
-      `SELECT *FROM yoga LEFT JOIN usersyoga ON yoga.id = usersyoga.yoga_id LEFT JOIN users ON usersyoga.users_id = users.id WHERE users.id = '${users_id}'`,
-      (err, result) => {
-        if (err) {
-          console.error("Error executing query", err.stack);
-          return res.status(500).json({ message: "Error executing query" });
-        }
-        res.json(result.rows);
-        client.release();
-      }
-    );
-  });
 };
 
 module.exports = {

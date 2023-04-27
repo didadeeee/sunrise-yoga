@@ -29,7 +29,8 @@ const showSelectedYogas = async (req, res) => {
       return res.status(500).json({ message: "Error acquiring client" });
     }
     client.query(
-      `SELECT *FROM yoga LEFT JOIN instructoryoga ON yoga.id = instructoryoga.yoga_id LEFT JOIN instructor ON instructoryoga.instructor_id = instructor.id WHERE yoga.id = '${id}'`,
+      "SELECT * FROM yoga LEFT JOIN instructoryoga ON yoga.id = instructoryoga.yoga_id LEFT JOIN instructor ON instructoryoga.instructor_id = instructor.id WHERE yoga.id = $1",
+      [id],
       (err, result) => {
         if (err) {
           console.error("Error executing query", err.stack);
@@ -43,7 +44,10 @@ const showSelectedYogas = async (req, res) => {
 };
 
 const filteredYogas = (duration, intensity, name, callback) => {
-  const query = `SELECT *FROM yoga LEFT JOIN instructoryoga ON yoga.id = instructoryoga.yoga_id LEFT JOIN instructor ON instructoryoga.instructor_id = instructor.id WHERE yoga.duration = ? AND yoga.intensity = ? AND instructor.name = ? `;
+  const query = `SELECT * FROM yoga 
+  LEFT JOIN instructoryoga ON yoga.id = instructoryoga.yoga_id 
+  LEFT JOIN instructor ON instructoryoga.instructor_id = instructor.id 
+  WHERE yoga.duration = ? AND yoga.intensity = ? AND instructor.name = ?`;
   const values = [duration, intensity, name];
   connection.query(query, values, (error, results) => {
     if (error) {
@@ -63,7 +67,8 @@ const bookmarkYogas = async (req, res) => {
       throw new Error("yoga_id is required");
     }
     const { rows } = await pool.query(
-      `INSERT INTO usersyoga (users_id, yoga_id) VALUES ('${users_id}', '${yoga_id}') RETURNING *;`
+      `INSERT INTO usersyoga (users_id, yoga_id) VALUES ($1, $2) RETURNING *;`,
+      [users_id, yoga_id]
     );
     const newUserYoga = rows[0];
     return res.json({ message: "Bookmark created", data: newUserYoga });
@@ -84,7 +89,8 @@ const unbookmarkYogas = async (req, res) => {
       throw new Error("yoga_id is required");
     }
     const result = await pool.query(
-      `DELETE FROM usersyoga WHERE users_id = '${users_id}' AND yoga_id = '${yoga_id}';`
+      "DELETE FROM usersyoga WHERE users_id = $1 AND yoga_id = $2;",
+      [users_id, yoga_id]
     );
     return res.json({ message: "Bookmark deleted" });
   } catch (error) {
