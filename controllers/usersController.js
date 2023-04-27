@@ -162,6 +162,34 @@ const checkBookmark = async (req, res) => {
   }
 };
 
+const showBookmarkYogas = async (req, res) => {
+  try {
+    if (!req.headers.authorization) {
+      return res
+        .status(401)
+        .json({ message: "Authorization header is missing" });
+    }
+
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const users_id = decodedToken.user.id;
+
+    const { rows } = await pool.query(
+      `SELECT * FROM yoga
+       LEFT JOIN usersyoga ON yoga.id = usersyoga.yoga_id
+       LEFT JOIN users ON usersyoga.users_id = users.id
+       WHERE users.id = $1`,
+      [users_id]
+    );
+
+    res.json(rows);
+  } catch (err) {
+    console.error("Error executing query", err.stack);
+    res.status(500).json({ message: "Error executing query" });
+  }
+};
+
+
 module.exports = {
   create,
   signUpEmail,
