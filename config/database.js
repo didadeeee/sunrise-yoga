@@ -2,7 +2,7 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 const pool = new Pool({
-  user: "eyidedrb",
+  user: "postgres",
   host: "arjuna.db.elephantsql.com",
   database: "sunrise-yoga",
   password: process.env.DB_PASSWORD,
