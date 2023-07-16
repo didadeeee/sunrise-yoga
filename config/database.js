@@ -5,7 +5,7 @@ const pool = new Pool({
   user: "eyidedrb",
   host: "arjuna.db.elephantsql.com",
   database: "eyidedrb",
-  password: "A7afI9BW5pK6-ucsQYrOm-b6TAfFUtFq",
+  password: process.env.DB_PASSWORD,
   port: 5432,
   ssl: {
     rejectUnauthorized: false,
