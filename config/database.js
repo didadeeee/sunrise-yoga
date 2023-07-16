@@ -2,10 +2,10 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 const pool = new Pool({
-  user: "didadeeee",
-  host: "db.bit.io",
-  database: "didadeeee/sunrise-yoga",
-  password: process.env.DB_PASSWORD,
+  user: "eyidedrb",
+  host: "arjuna.db.elephantsql.com",
+  database: "eyidedrb",
+  password: "A7afI9BW5pK6-ucsQYrOm-b6TAfFUtFq",
   port: 5432,
   ssl: {
     rejectUnauthorized: false,
