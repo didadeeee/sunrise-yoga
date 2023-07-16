@@ -4,7 +4,7 @@ require("dotenv").config();
 const pool = new Pool({
   user: "eyidedrb",
   host: "arjuna.db.elephantsql.com",
-  database: "eyidedrb",
+  database: "sunrise-yoga",
   password: process.env.DB_PASSWORD,
   port: 5432,
   ssl: {
